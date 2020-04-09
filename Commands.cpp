@@ -84,7 +84,7 @@ void _removeBackgroundSign(char* cmd_line) {
 
 // TODO: Add your implementation for classes in Commands.h 
 
-SmallShell::SmallShell() {
+SmallShell::SmallShell() : jobs(), defaultName("smash"), name(defaultName) {
 // TODO: add your implementation
 }
 
@@ -92,10 +92,31 @@ SmallShell::~SmallShell() {
 // TODO: add your implementation
 }
 
+
+
 /**
 * Creates and returns a pointer to Command class which matches the given command line (cmd_line)
 */
 Command * SmallShell::CreateCommand(const char* cmd_line) {
+    const std::string commands [] = {
+            "chprompt", "showpid", "pwd", "cd", "jobs", "kill", "fg",
+            "bg", "quit"
+    };
+    std::string cmd_s = string(cmd_line);
+    if (cmd_s.find(commands[0]) == 0)
+        return nullptr;
+
+    if (cmd_s.find(commands[2]) == 0){
+        return new GetCurrDirCommand(cmd_line);
+    }
+
+    vector<string> command = splitCommand(cmd_line);
+
+    if (command[0] == commands[0]){
+        return new chpromptCommand(command[1]);
+    }
+
+
 	// For example:
 /*
   string cmd_s = string(cmd_line);
@@ -112,9 +133,24 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
 }
 
 void SmallShell::executeCommand(const char *cmd_line) {
-  // TODO: Add your implementation here
-  // for example:
-  // Command* cmd = CreateCommand(cmd_line);
-  // cmd->execute();
-  // Please note that you must fork smash process for some commands (e.g., external commands....)
+    // TODO: Add your implementation here
+    // for example:
+    Command* cmd = CreateCommand(cmd_line);
+    cmd->execute();
+    // Please note that you must fork smash process for some commands (e.g., external commands....)
+}
+
+const std::string SmallShell::getName() const {
+    return name;
+}
+
+void SmallShell::setName(const string s) {
+    if (s.size() == 0)
+        name = defaultName;
+    else
+        name = s;
+}
+
+void chpromptCommand::execute() {
+    SmallShell::getInstance().setName(newName);
 }
