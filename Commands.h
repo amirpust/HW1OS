@@ -52,9 +52,9 @@ class RedirectionCommand : public Command {
 };
 
 class chpromptCommand : public BuiltInCommand{
-    const string newName;
+    const char* newName;
 public:
-    chpromptCommand(const string _newName) : BuiltInCommand(nullptr) , newName(_newName) {};
+    chpromptCommand(const char* _newName) : BuiltInCommand(nullptr) , newName(_newName) {};
     void execute() override;
 };
 
@@ -203,7 +203,7 @@ public:
     ~SmallShell();
     void executeCommand(const char* cmd_line);
     const std::string getName() const;
-    void setName(const string s);
+    void setName(const char* s);
     // TODO: add extra methods as needed
 
 };

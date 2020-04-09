@@ -22,6 +22,8 @@ const std::string WHITESPACE = " \n\r\t\f\v";
 #define FUNC_EXIT()
 #endif
 
+#define MAX_ARGS 20
+
 #define DEBUG_PRINT cerr << "DEBUG: "
 
 #define EXEC(path, arg) \
@@ -103,10 +105,12 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
             "bg", "quit"
     };
 
-    vector<string> command = splitCommand(cmd_line);
+    char** args = new char*[MAX_ARGS];
+    _parseCommandLine(cmd_line, args);
+    string command = string(args[0]);
 
-    if (command[0] == commands[0]){
-        return new chpromptCommand(command[1]);
+    if (command == commands[0]){
+        return new chpromptCommand(args[1]);
     }
 
 
@@ -137,11 +141,11 @@ const std::string SmallShell::getName() const {
     return name;
 }
 
-void SmallShell::setName(const string s) {
-    if (s.size() == 0)
+void SmallShell::setName(const char* s) {
+    if (!s)
         name = defaultName;
     else
-        name = s;
+        name = string(s);
 }
 
 void chpromptCommand::execute() {
