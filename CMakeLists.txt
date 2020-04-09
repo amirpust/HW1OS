@@ -3,4 +3,4 @@ project(HW1)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(HW1 main.cpp)
+add_executable(HW1 main.cpp Commands.h Commands.cpp)
