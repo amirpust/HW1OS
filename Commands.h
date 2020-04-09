@@ -207,7 +207,25 @@ public:
     // TODO: add extra methods as needed
 
 private:
-    vector<string> splitCommand(const char* cmd_line);
+    vector<string> splitCommand(const char* cmd_line){
+        int index = 0;
+        vector<string> split;
+        string buffer;
+        while(cmd_line[index] != '\0'){
+            if(cmd_line[index] != ' ')
+                buffer.append(1,cmd_line[index]);
+
+            if(cmd_line[index] == ' '){
+                split.push_back(buffer);
+                buffer.clear();
+            }
+            index++;
+        }
+
+        if(split.size() == 1)
+            split.push_back("");
+        return split;
+    };
 };
 
 #endif //SMASH_COMMAND_H_
