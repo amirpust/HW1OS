@@ -102,13 +102,6 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
             "chprompt", "showpid", "pwd", "cd", "jobs", "kill", "fg",
             "bg", "quit"
     };
-    std::string cmd_s = string(cmd_line);
-    if (cmd_s.find(commands[0]) == 0)
-        return nullptr;
-
-    if (cmd_s.find(commands[2]) == 0){
-        return new GetCurrDirCommand(cmd_line);
-    }
 
     vector<string> command = splitCommand(cmd_line);
 
