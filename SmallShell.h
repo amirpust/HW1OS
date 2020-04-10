@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
-#include "JobsL ist.h"
+#include "JobsList.h"
 #include <stack>
 
 class SmallShell {
@@ -19,7 +19,7 @@ private:
     char* currentDir;
     std::string name;
     std::stack<const char*> dirHistory;
-    SmallShell();
+    SmallShell() : jobs(), defaultName("smash"), name(defaultName),dirHistory() {};
 
 public:
     Command *CreateCommand(const char* cmd_line);
@@ -31,7 +31,7 @@ public:
         // Instantiated on first use.
         return instance;
     }
-    ~SmallShell();
+    ~SmallShell() = default;
     void executeCommand(const char* cmd_line);
     const std::string getName() const;
     void setName(const char* s);
@@ -39,12 +39,10 @@ public:
     const char* popLastDir();
     void pushDir(const char* dir);
     int dirHistorySize();
-
     char *getCurrentDir() const;
-
     void setCurrentDir(char *currentDir);
 
-    void printJobs()const {
+    void printJobs() {
         jobs.printJobsList();
     }
 };

@@ -5,6 +5,7 @@
 #include <sstream>
 #include <sys/wait.h>
 #include <iomanip>
+#include "SmallShell.h"
 #include "Commands.h"
 
 using namespace std;

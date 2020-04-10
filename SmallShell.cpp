@@ -27,14 +27,6 @@ void SmallShell::setName(const char* s) {
 }
 
 
-SmallShell::SmallShell() : jobs(), defaultName("smash"), name(defaultName),dirHistory() {
-// TODO: add your implementation add starting directory
-}
-
-SmallShell::~SmallShell() {
-// TODO: add your implementation
-}
-
 /**
 * Creates and returns a pointer to Command class which matches the given command line (cmd_line)
 */
@@ -44,46 +36,33 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
             "bg", "quit"
     };
 
-    //TODO:
-    char** args = new char*[MAX_ARGS];
-    int args_num = _parseCommandLine(cmd_line, args);
-    string command = string(args[0]);
+    string str = string(cmd_line);
+    if (str.find(commands[0]) == 0)
+        return new chpromptCommand(cmd_line);
 
-    if (command == commands[0]){
-        return new chpromptCommand(args[1]);
-    }
-    if (command == commands[1]){
-        return new showpidCommand();
-    }
-    if (command == commands[2]){
-        return new pwdCommand();
-    }
-    if (command == commands[3]){
-        if (args_num > 2)
-            throw new Command::tooManyArgs("cd");
-        return new cdCommand(args[1]);
-    }
-    if (command == commands[4]){
-        return new jobsCommand();
-    }
-    if (command == commands[5]){
-        if (args_num != 3)
-            throw Command::invalidArgs("kill");
-        return new killCommand(args[1], args[2]);
-    }
-    if (command == commands[6]){
-        if(args_num != 2)
-            throw Command::invalidArgs("fg");
-        return new fgCommand(args[1]);
-    }
-    if (command == commands[7]){
-        if(args_num > 2)
-            throw Command::invalidArgs("bg");
-        return new bgCommand(args[1]);
-    }
-    if (command == commands[8]){
-        return new quitCommand(args[1]);
-    }
+    if (str.find(commands[1]) == 0)
+        return new showpidCommand(cmd_line);
+
+    if (str.find(commands[2]) == 0)
+        return new pwdCommand(cmd_line);
+
+    if (str.find(commands[3]) == 0)
+        return new cdCommand(cmd_line);
+
+    if (str.find(commands[4]) == 0)
+        return new jobsCommand(cmd_line);
+
+    if (str.find(commands[5]) == 0)
+        return new killCommand(cmd_line);
+
+    if (str.find(commands[6]) == 0)
+        return new fgCommand(cmd_line);
+
+    if (str.find(commands[7]) == 0)
+        return new bgCommand(cmd_line);
+
+    if (str.find(commands[8]) == 0)
+        return new quitCommand(cmd_line);
 
     return nullptr;
 }

@@ -2,7 +2,6 @@
 #define SMASH_COMMAND_H_
 
 #include <vector>
-#include "SmallShell.h"
 #include "CommandExceptions.h"
 
 using std::vector;
@@ -28,6 +27,7 @@ public:
     //virtual void prepare();
     //virtual void cleanup();
     // TODO: Add your extra methods if needed
+    bool isFinished();
 };
 
 

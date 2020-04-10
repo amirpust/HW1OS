@@ -7,6 +7,10 @@
 
 #include "Commands.h"
 #include <exception>
+#include <time.h>
+
+using std::cout;
+using std::endl;
 
 
 class JobsList {
@@ -18,10 +22,11 @@ public:
         time_t stopTime;
         int jobId;
     public:
-        JobEntry(Command* _cmd, bool stopped, int _jobId) :
-        cmd(_cmd), stopped(_stopped), jobId(_jobId){
-            time(&startTime);
+        JobEntry(Command* _cmd, bool _stopped, int _jobId) :
+                cmd(_cmd), stopped(_stopped), jobId(_jobId){
+                time(&startTime);
         }
+        ~JobEntry() = default;
 
         Command *getCmd() const {
             return cmd;
@@ -71,72 +76,20 @@ private:
 public:
     JobsList() : counter(0), maxId(0), jobs() {};
     ~JobsList();
-    void addJob(Command* cmd, bool isStopped = false){
-        update();
-        if(jobs.size() >= 100) //TODO: define & throw
-            ;//
-        jobs.push_back(new JobEntry(cmd, isStopped, ++maxId));
-    }
-    void printJobsList(){
-        update();
-
-        for (auto i : jobs){
-            cout << "[" << i->getJobId() << "] " << i->getCmd()->print();
-            cout << " : " << i->getCmd()->getPid() << " ";
-            if(i->isStopped()){
-                cout << i->getStartTime() - i->getStopTime()<< " secs (stopped)"
-            }else{
-                cout << i->getStartTime() - time() << " secs";
-            }
-            cout << endl;
-        }
-    }
+    void addJob(Command* cmd, bool isStopped = false);
+    void printJobsList();
     void killAllJobs(); //TODO
 
-    JobEntry * getJobById(int jobId) {
-        update();
-
-        for (auto i : jobs)
-            if(i->getJobId() == jobId)
-                return i;
-
-        throw notExist(jobId);
-    }
-    void removeJobById(int jobId){
-        update();
-
-        for (auto i : jobs)
-            if(i->getJobId() == jobId){
-                //TODO
-            }
-        throw notExist(jobId);
-    }
+    JobEntry * getJobById(int jobId);
+    void removeJobById(int jobId);
     JobEntry * getLastJob(int* lastJobId);
     JobEntry *getLastStoppedJob(int *jobId);
 
-    void update() {
-        removeFinishedJobs();
-        if(jobs.empty())
-            maxId = 0;
-        else
-            maxId = jobs.back()->getJobId();
-    }
-    bool contains(int jobId){
-        for (auto i: jobs)
-            if( i->getJobId() == jobId)
-                return true;
-        return false;
-    }
+    void update();
+    bool contains(int jobId);
 
 private:
-    void removeFinishedJobs(){
-        for (vector<*JobEntry>::iterator i = jobs.begin(); i != jobs.end(); i++){
-            if ((*i)->getCmd()->isFinished()){
-                delete (*i)->getCmd();
-                jobs.erase(i);
-            }
-        }
-    } //TODO
+    void removeFinishedJobs();
 
 
     // TODO: Add extra methods or modify exisitng ones as needed
