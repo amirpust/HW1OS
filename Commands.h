@@ -106,8 +106,12 @@ public:
 };
 
 class fgCommand : public BuiltInCommand{
+    int jobId;
+
 public:
-    fgCommand() : BuiltInCommand(nullptr){};
+    fgCommand(const char* _jobId) : jobId(0), BuiltInCommand(nullptr){
+        sscanf(_jobId, "%d", &jobId);
+    };
     void execute() override ;
 };
 
