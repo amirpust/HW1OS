@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <signal.h>
-#include "Commands.h"
+#include "SmallShell.h"
 //#include "signals.h"
 
 int main(int argc, char* argv[]) {
@@ -20,10 +20,14 @@ int main(int argc, char* argv[]) {
 
 
     while(true) {
-        std::cout << smash.getName() << "> "; // TODO: change this (why?)
+        std::cout << smash.getName() << "> ";
         std::string cmd_line;
         std::getline(std::cin, cmd_line);
-        smash.executeCommand(cmd_line.c_str());
+        try{
+            smash.executeCommand(cmd_line.c_str());
+        }catch(exception& e) {
+            std::cout << e.what();
+        }
     }
     return 0;
 }

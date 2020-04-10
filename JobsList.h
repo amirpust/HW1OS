@@ -6,7 +6,7 @@
 #define HW1_JOBSLIST_H
 
 #include "Commands.h"
-#include "CommandExceptions.h"
+#include <exception>
 
 
 class JobsList {
@@ -41,8 +41,26 @@ public:
 
         int getJobId() const {
             return jobId;
+        }
+
+        bool operator==(const JobEntry &rhs) const {
+            return jobId == rhs.jobId;
+        }
+
+        bool operator!=(const JobEntry &rhs) const {
+            return !(rhs == *this);
         };
 
+    };
+    class notExist: public std::exception{
+        int jobId;
+
+        public:
+        notExist(int _jobId): jobId(_jobId){};
+
+        const char *what() const noexcept override {
+            return ("job-id " + std::to_string(jobId) + string(" does not exist")).c_str();
+        }
     };
 
 private:
@@ -75,17 +93,23 @@ public:
     }
     void killAllJobs(); //TODO
 
-
     JobEntry * getJobById(int jobId) {
         update();
+
         for (auto i : jobs)
             if(i->getJobId() == jobId)
                 return i;
-        //TODO:
-        throw jobNotExists("");
+
+        throw notExist(jobId);
     }
     void removeJobById(int jobId){
+        update();
 
+        for (auto i : jobs)
+            if(i->getJobId() == jobId){
+                //TODO
+            }
+        throw notExist(jobId);
     }
     JobEntry * getLastJob(int* lastJobId);
     JobEntry *getLastStoppedJob(int *jobId);
@@ -97,6 +121,12 @@ public:
         else
             maxId = jobs.back()->getJobId();
     }
+    bool contains(int jobId){
+        for (auto i: jobs)
+            if( i->getJobId() == jobId)
+                return true;
+        return false;
+    }
 
 private:
     void removeFinishedJobs(){
@@ -107,6 +137,7 @@ private:
             }
         }
     } //TODO
+
 
     // TODO: Add extra methods or modify exisitng ones as needed
 };

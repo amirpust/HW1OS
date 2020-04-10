@@ -102,7 +102,7 @@ class jobsCommand : public BuiltInCommand{
 
 public:
     jobsCommand(const char* cmd_line);
-    void execute(); override ;
+    void execute() override ;
 };
 
 
@@ -112,9 +112,7 @@ class killCommand : public BuiltInCommand{
 
 public:
     killCommand(const char* _signum, const char* _jobId);;
-    void execute() {
-
-    } override ;
+    void execute() override ;
 };
 
 
@@ -166,6 +164,7 @@ class ShowPidCommand : public BuiltInCommand {
   void execute() override;
 };
 
+/*
 
 class QuitCommand : public BuiltInCommand {
 // TODO: Add your data members public:
@@ -232,7 +231,7 @@ class BackgroundCommand : public BuiltInCommand {
   virtual ~BackgroundCommand() {}
   void execute() override;
 };
-
+*/
 
 // TODO: should it really inhirit from BuiltInCommand ?
 class CopyCommand : public BuiltInCommand {

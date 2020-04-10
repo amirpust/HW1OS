@@ -5,7 +5,7 @@
 #ifndef HW1_COMMANDEXCEPTIONS_H
 #define HW1_COMMANDEXCEPTIONS_H
 
-#include "Commands.h"
+//#include "Commands.h"
 #include <exception>
 #include <iostream>
 
