@@ -105,7 +105,7 @@ public:
     void execute() override ;
 };
 
-/*
+
 class killCommand : public BuiltInCommand{
     int sigNum;
     int jobId;
@@ -114,7 +114,7 @@ public:
     killCommand(const char* cmd_line) : BuiltInCommand(cmd_line),sigNum(0), jobId(0){};
     void execute() override ;
 };
-
+/*
 
 class fgCommand : public BuiltInCommand{
     int jobId;

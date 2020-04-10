@@ -51,10 +51,10 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
 
     if (str.find(commands[4]) == 0)
         return new jobsCommand(cmd_line);
-/*
+
     if (str.find(commands[5]) == 0)
         return new killCommand(cmd_line);
-
+/*
     if (str.find(commands[6]) == 0)
         return new fgCommand(cmd_line);
 
