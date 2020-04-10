@@ -2,6 +2,8 @@
 #define SMASH_COMMAND_H_
 
 #include <vector>
+#include "SmallShell.h"
+
 using std::vector;
 using std::string;
 
