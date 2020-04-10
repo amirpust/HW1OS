@@ -108,12 +108,13 @@ showpidCommand::showpidCommand(const char *cmd_line) :BuiltInCommand(cmd_line){}
 
 void showpidCommand::execute() {
     std::cout << SmallShell::getInstance().getName() << " pid is "
-              << getpid();
+              << getpid()  << endl;
 }
 
 void pwdCommand::execute() {
     char* buffer = new char[4096] ;
-    cout << getcwd(buffer, 4096); //TODO: check if there is better solution
+    getcwd(buffer, 4096); //TODO: check if there is better solution
+    cout << buffer << endl;
     delete[] buffer;
 }
 
@@ -139,10 +140,11 @@ void cdCommand::execute() {
         SmallShell::getInstance().pushDir(args[1]);
     }
 }
-
+/*
 jobsCommand::jobsCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
 
 void jobsCommand::execute() {
     SmallShell::getInstance().printJobs();
 }
 
+*/

@@ -19,7 +19,7 @@ protected:
     int size;
     // TODO: Add your data members
 public:
-    Command(const char* cmd_line);;
+    Command(const char* cmd_line);
     virtual ~Command() = default;
     virtual void execute() = 0;
     const char* print()const;
@@ -27,7 +27,9 @@ public:
     //virtual void prepare();
     //virtual void cleanup();
     // TODO: Add your extra methods if needed
-    bool isFinished();
+    bool isFinished(){
+        return true;
+    };
 };
 
 
@@ -95,7 +97,7 @@ public:
     explicit cdCommand(const char* cmd_line);;
     void execute() override;;
 };
-
+/*
 //printing all the jobs in jobList in sorted order
 class jobsCommand : public BuiltInCommand{
 
@@ -110,8 +112,7 @@ class killCommand : public BuiltInCommand{
     int jobId;
 
 public:
-    killCommand(const char* cmd_line) : BuiltInCommand(cmd_line),sigNum(0), jobId(0){
-    };
+    killCommand(const char* cmd_line) : BuiltInCommand(cmd_line),sigNum(0), jobId(0){};
     void execute() override ;
 };
 
@@ -162,7 +163,7 @@ class ShowPidCommand : public BuiltInCommand {
   virtual ~ShowPidCommand() {}
   void execute() override;
 };
-
+*/
 /*
 
 class QuitCommand : public BuiltInCommand {
