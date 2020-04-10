@@ -129,7 +129,7 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
     if (command == commands[5]){
         if (args_num != 3)
             throw Command::invalidArgs("kill");
-        return new jobsCommand(args[1], args[2]);
+        return new killCommand(args[1], args[2]);
     }
     if (command == commands[6]){
         if(args_num != 2)

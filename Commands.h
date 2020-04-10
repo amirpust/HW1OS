@@ -92,10 +92,17 @@ public:
 };
 
 class killCommand : public BuiltInCommand{
+    int sigNum;
+    int jobId;
 
 public:
-    killCommand() :BuiltInCommand(nullptr){};
-    void execute() override ;
+    killCommand(const char* _signum, const char* _jobId):sigNum(0),jobId(0)
+    ,BuiltInCommand(nullptr){
+        sscanf(_signum,"%d", &sigNum);
+        sscanf(_jobId,"%d", &jobId);
+
+    };
+    void execute() override ;//TODO
 };
 
 class fgCommand : public BuiltInCommand{
