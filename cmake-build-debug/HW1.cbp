@@ -101,6 +101,9 @@
 		<Unit filename="C:/Programming Lab/OpSys/main.cpp">
 			<Option target="HW1"/>
 		</Unit>
+		<Unit filename="C:/Programming Lab/OpSys/smash.cpp">
+			<Option target="HW1"/>
+		</Unit>
 		<Unit filename="C:/Programming Lab/OpSys/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

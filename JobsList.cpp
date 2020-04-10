@@ -3,3 +3,10 @@
 //
 
 #include "JobsList.h"
+
+JobsList::~JobsList() {
+    for (auto i : jobs)
+        delete i;
+
+    delete [] jobs;
+}

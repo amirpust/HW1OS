@@ -230,6 +230,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+smash.obj: smash.cpp.obj
+
+.PHONY : smash.obj
+
+# target to build an object file
+smash.cpp.obj:
+	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/smash.cpp.obj
+.PHONY : smash.cpp.obj
+
+smash.i: smash.cpp.i
+
+.PHONY : smash.i
+
+# target to preprocess a source file
+smash.cpp.i:
+	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/smash.cpp.i
+.PHONY : smash.cpp.i
+
+smash.s: smash.cpp.s
+
+.PHONY : smash.s
+
+# target to generate assembly for a file
+smash.cpp.s:
+	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/smash.cpp.s
+.PHONY : smash.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -251,6 +278,9 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... smash.obj
+	@echo ... smash.i
+	@echo ... smash.s
 .PHONY : help
 
 
