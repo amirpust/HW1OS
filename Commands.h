@@ -55,8 +55,20 @@ class RedirectionCommand : public Command {
 class chpromptCommand : public BuiltInCommand{
     const char* newName;
 public:
-    chpromptCommand(const char* _newName) : BuiltInCommand(nullptr) , newName(_newName) {};
+    explicit chpromptCommand(const char* _newName) : BuiltInCommand(nullptr)
+                        , newName(_newName) {};
     void execute() override;
+};
+
+class showpidCommand : public BuiltInCommand{
+
+public:
+    showpidCommand():BuiltInCommand(nullptr){};
+
+    void execute() override{
+        std::cout << SmallShell::getInstance().getName() << " pid is "
+                        << SmallShell::getInstance().getpid();
+    };
 };
 
 class ChangeDirCommand : public BuiltInCommand {
