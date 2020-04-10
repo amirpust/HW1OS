@@ -106,27 +106,46 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
     };
 
     char** args = new char*[MAX_ARGS];
-    _parseCommandLine(cmd_line, args);
+    int args_num = _parseCommandLine(cmd_line, args);
     string command = string(args[0]);
 
     if (command == commands[0]){
         return new chpromptCommand(args[1]);
     }
+    if (command == commands[1]){
+        return new showpidCommand();
+    }
+    if (command == commands[2]){
+        return new pwdCommand();
+    }
+    if (command == commands[3]){
+        if (args_num > 2)
+            throw new Command::tooManyArgs("cd");
+        return new cdCommand(const char* args[1]);
+    }
+    if (command == commands[4]){
+        return new jobsCommand();
+    }
+    if (command == commands[5]){
+        if (args_num != 3)
+            throw Command::invalidArgs("kill");
+        return new jobsCommand(const char* args[1], const char* args[2]);
+    }
+    if (command == commands[6]){
+        if(args_num != 2)
+            throw Command::invalidArgs("fg");
+        return new fgCommand(args[1]);
+    }
+    if (command == commands[7]){
+        if(args_num > 2)
+            throw Command::invalidArgs("bg");
+        return new bgCommand(args[1]);
+    }
+    if (command == commands[8]){
+        return new quitCommand(args[1]);
+    }
 
-
-	// For example:
-/*
-  string cmd_s = string(cmd_line);
-  if (cmd_s.find("pwd") == 0) {
-    return new GetCurrDirCommand(cmd_line);
-  }
-  else if ...
-  .....
-  else {
-    return new ExternalCommand(cmd_line);
-  }
-  */
-  return nullptr;
+    return nullptr;
 }
 
 void SmallShell::executeCommand(const char *cmd_line) {
