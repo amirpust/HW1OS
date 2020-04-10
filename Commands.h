@@ -17,7 +17,6 @@ class Command {
 protected:
     char** args;
     int size;
-    // TODO: Add your data members
 public:
     Command(const char* cmd_line);
     virtual ~Command() = default;

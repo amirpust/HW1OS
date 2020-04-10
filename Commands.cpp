@@ -93,7 +93,10 @@ void chpromptCommand::execute() {
 
 Command::Command(const char *cmd_line) : cmd_line(cmd_line) {
     args = new char*[COMMAND_MAX_ARGS];
-    int args_num = _parseCommandLine(cmd_line, args);
+    size = _parseCommandLine(cmd_line, args);
+
+   /* cout << "size " << size << endl;
+    cout << "arg[1] :" <<args[1] << endl;*/
 }
 
 const char *Command::print() const {
@@ -123,6 +126,7 @@ cdCommand::cdCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
 void cdCommand::execute() {
     if(size > 2){
         throw tooManyArgs(args[0]);
+
     }
     if(strcmp(args[1],"-") == 0){
         if (SmallShell::getInstance().dirHistorySize() == 0){

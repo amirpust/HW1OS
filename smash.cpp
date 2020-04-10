@@ -25,8 +25,8 @@ int main(int argc, char* argv[]) {
         std::getline(std::cin, cmd_line);
         try{
             smash.executeCommand(cmd_line.c_str());
-        }catch(exception& e) {
-            std::cout << e.what();
+        }catch(commandException& e) {
+            std::cout << smash.getName() << e.print() << endl;
         }
     }
     return 0;
