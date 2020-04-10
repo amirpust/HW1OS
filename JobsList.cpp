@@ -27,6 +27,8 @@ void JobsList::addJob(Command *cmd, bool isStopped) {
 void JobsList::printJobsList() {
     update();
 
+    cout << "Job List: " << endl;
+
     for (auto i : jobs){
         cout << "[" << i->getJobId() << "] " << i->getCmd()->print();
         cout << " : " << i->getCmd()->getCommandPid() << " ";

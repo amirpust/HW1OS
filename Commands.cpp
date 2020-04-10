@@ -142,11 +142,9 @@ void cdCommand::execute() {
         SmallShell::getInstance().pushDir(args[1]);
     }
 }
-/*
+
 jobsCommand::jobsCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
 
 void jobsCommand::execute() {
     SmallShell::getInstance().printJobs();
 }
-
-*/

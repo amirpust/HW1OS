@@ -48,10 +48,10 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
 
     if (str.find(commands[3]) == 0)
         return new cdCommand(cmd_line);
-/*
+
     if (str.find(commands[4]) == 0)
         return new jobsCommand(cmd_line);
-
+/*
     if (str.find(commands[5]) == 0)
         return new killCommand(cmd_line);
 

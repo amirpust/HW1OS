@@ -96,7 +96,7 @@ public:
     explicit cdCommand(const char* cmd_line);;
     void execute() override;;
 };
-/*
+
 //printing all the jobs in jobList in sorted order
 class jobsCommand : public BuiltInCommand{
 
@@ -105,7 +105,7 @@ public:
     void execute() override ;
 };
 
-
+/*
 class killCommand : public BuiltInCommand{
     int sigNum;
     int jobId;
