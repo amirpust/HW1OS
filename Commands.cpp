@@ -95,8 +95,6 @@ Command::Command(const char *cmd_line) : cmd_line(cmd_line) {
     args = new char*[COMMAND_MAX_ARGS];
     size = _parseCommandLine(cmd_line, args);
 
-   /* cout << "size " << size << endl;
-    cout << "arg[1] :" <<args[1] << endl;*/
 }
 
 const char *Command::print() const {

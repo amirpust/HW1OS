@@ -1,7 +1,3 @@
-//
-// Created by jonat on 10/04/2020.
-//
-
 #ifndef HW1_SMALLSHELL_H
 #define HW1_SMALLSHELL_H
 
@@ -10,6 +6,7 @@
 #include <iostream>
 #include "JobsList.h"
 #include <stack>
+#include <unistd.h>
 
 class SmallShell {
 private:
@@ -19,7 +16,10 @@ private:
     char* currentDir;
     std::string name;
     std::stack<const char*> dirHistory;
-    SmallShell() : jobs(), defaultName("smash"), name(defaultName),dirHistory() {};
+    SmallShell() : jobs(), defaultName("smash"), name(defaultName),dirHistory(){
+        currentDir = new char[4096] ;
+        getcwd(currentDir, 4096);
+    };
 
 public:
     Command *CreateCommand(const char* cmd_line);
@@ -31,7 +31,12 @@ public:
         // Instantiated on first use.
         return instance;
     }
-    ~SmallShell() = default;
+    ~SmallShell(){
+        while(!dirHistory.empty()){
+            popLastDir();
+        }
+        delete []currentDir;
+    };
     void executeCommand(const char* cmd_line);
     const std::string getName() const;
     void setName(const char* s);
