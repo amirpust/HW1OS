@@ -71,6 +71,51 @@ public:
     };
 };
 
+class pwdCommand : public BuiltInCommand{
+public:
+    pwdCommand() : BuiltInCommand(nullptr){};
+    void execute() override ;
+};
+
+class cdCommand : public BuiltInCommand{
+const char* newDir;
+public:
+    explicit cdCommand(const char* dir) : BuiltInCommand(nullptr), newDir(dir){};
+    void execute() override ;
+};
+
+class jobsCommand : public BuiltInCommand{
+
+public:
+    jobsCommand() : BuiltInCommand(nullptr){};
+    void execute() override ;
+};
+
+class killCommand : public BuiltInCommand{
+
+public:
+    killCommand() :BuiltInCommand(nullptr){};
+    void execute() override ;
+};
+
+class fgCommand : public BuiltInCommand{
+public:
+    fgCommand() : BuiltInCommand(nullptr){};
+    void execute() override ;
+};
+
+class bgCommand : public BuiltInCommand{
+public:
+    bgCommand() : BuiltInCommand(nullptr){};
+    void execute() override ;
+};
+
+class quitCommand : public BuiltInCommand{
+public:
+    quitCommand(): BuiltInCommand(nullptr){};
+    void execute() override ;
+};
+
 class ChangeDirCommand : public BuiltInCommand {
 // TODO: Add your data members public:
   ChangeDirCommand(const char* cmd_line, char** plastPwd);
