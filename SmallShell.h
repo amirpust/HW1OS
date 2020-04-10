@@ -10,15 +10,17 @@
 #include <iostream>
 #include "Commands.h"
 #include "JobsList.h"
+#include <stack>
 
 class SmallShell {
 private:
-    // TODO: Add your data members
+    //TODO: Add your data members
     JobsList jobs;
-
     const std::string defaultName;
     std::string name;
+    std::stack<const char*> dirHistory;
     SmallShell();
+
 public:
     Command *CreateCommand(const char* cmd_line);
     SmallShell(SmallShell const&)      = delete; // disable copy ctor
@@ -33,7 +35,11 @@ public:
     void executeCommand(const char* cmd_line);
     const std::string getName() const;
     void setName(const char* s);
-    // TODO: add extra methods as needed
+    //TODO: add extra methods as needed
+    const char* popLastDir();
+    void pushDir(const char* dir);
+    int dirHistorySize();
+
 
 };
 

@@ -11,19 +11,22 @@ using std::string;
 #define COMMAND_MAX_ARGS (20)
 #define HISTORY_MAX_RECORDS (50)
 
+
 class Command {
     const char* cmd_line;
 protected:
     char** args;
     int size;
     // TODO: Add your data members
- public:
-  Command(const char* cmd_line);;
-  virtual ~Command() = default;
-  virtual void execute() = 0;
-  //virtual void prepare();
-  //virtual void cleanup();
-  // TODO: Add your extra methods if needed
+public:
+    Command(const char* cmd_line);;
+    virtual ~Command() = default;
+    virtual void execute() = 0;
+    const char* print()const;
+    pid_t getCommandPid() const;
+    //virtual void prepare();
+    //virtual void cleanup();
+    // TODO: Add your extra methods if needed
 };
 
 class BuiltInCommand : public Command {
@@ -58,41 +61,36 @@ class RedirectionCommand : public Command {
 };
 
 class chpromptCommand : public BuiltInCommand{
-    const char* newName;
 public:
-    explicit chpromptCommand(const char* _newName) : BuiltInCommand(nullptr)
-                        , newName(_newName) {};
+    explicit chpromptCommand(const char* cmd_line);
     void execute() override;
+
 };
 
 class showpidCommand : public BuiltInCommand{
 
 public:
-    showpidCommand():BuiltInCommand(nullptr){};
+    showpidCommand(const char* cmd_line);;
 
-    void execute() override{
-        std::cout << SmallShell::getInstance().getName() << " pid is "
-                        << SmallShell::getInstance().getpid();
-    };
+    void execute() override;;
 };
 
 class pwdCommand : public BuiltInCommand{
 public:
-    pwdCommand() : BuiltInCommand(nullptr){};
-    void execute() override ;
+    pwdCommand(const char* cmd_line) : BuiltInCommand(cmd_line){};
+    void execute() override;;
 };
 
 class cdCommand : public BuiltInCommand{
-const char* newDir;
 public:
-    explicit cdCommand(const char* dir) : BuiltInCommand(nullptr), newDir(dir){};
-    void execute() override ;
+    explicit cdCommand(const char* cmd_line);;
+    void execute() override;;
 };
 
 class jobsCommand : public BuiltInCommand{
 
 public:
-    jobsCommand() : BuiltInCommand(nullptr){};
+    jobsCommand(const char* cmd_line);;
     void execute() override ;
 };
 

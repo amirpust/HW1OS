@@ -27,7 +27,7 @@ void SmallShell::setName(const char* s) {
 }
 
 
-SmallShell::SmallShell() : jobs(), defaultName("smash"), name(defaultName) {
+SmallShell::SmallShell() : jobs(), defaultName("smash"), name(defaultName),dirHistory() {
 // TODO: add your implementation
 }
 
@@ -86,4 +86,18 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
     }
 
     return nullptr;
+}
+
+const char *SmallShell::popLastDir() {
+    const char* dir = dirHistory.top();
+    dirHistory.pop();
+    return dir;
+}
+
+void SmallShell::pushDir(const char *dir) {
+    dirHistory.push(dir);
+}
+
+int SmallShell::dirHistorySize() {
+    return dirHistory.size();
 }

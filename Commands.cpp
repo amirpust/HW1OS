@@ -84,11 +84,58 @@ void _removeBackgroundSign(char* cmd_line) {
 
 // TODO: Add your implementation for classes in Commands.h
 
+chpromptCommand::chpromptCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
+
 void chpromptCommand::execute() {
-    SmallShell::getInstance().setName(newName);
+    SmallShell::getInstance().setName(args[1]);
 }
 
 Command::Command(const char *cmd_line) : cmd_line(cmd_line) {
     args = new char*[COMMAND_MAX_ARGS];
     int args_num = _parseCommandLine(cmd_line, args);
 }
+
+const char *Command::print() const {
+    return args[0];
+}
+
+pid_t Command::getCommandPid() const {
+    return getpid();
+}
+
+showpidCommand::showpidCommand(const char *cmd_line) :BuiltInCommand(cmd_line){}
+
+void showpidCommand::execute() {
+    std::cout << SmallShell::getInstance().getName() << " pid is "
+              << getpid();
+}
+
+void pwdCommand::execute() {
+    char* buffer = new char[MAX_PATH] ;
+    cout << getcwd(buffer, MAX_PATH);
+    delete[] buffer;
+}
+
+cdCommand::cdCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
+
+void cdCommand::execute() {
+    if(SmallShell::getInstance().dirHistorySize() > 2){
+        //TODO: throw to many arguments
+    }
+    if (SmallShell::getInstance().dirHistorySize() == 0){
+        //TODO: throw OLDPWD not set
+    }
+    if(strcmp(args[1],"-") == 0){
+        if(chdir(SmallShell::getInstance().popLastDir()) == -1){
+            //TODO: throw <syscall name (cd)> error
+        }
+        return;
+    }
+    if(chdir(args[1]) == -1){
+        //TODO: throw <syscall name (cd)> error
+    }else{
+        SmallShell::getInstance().pushDir(args[1]);
+    }
+}
+
+jobsCommand::jobsCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
