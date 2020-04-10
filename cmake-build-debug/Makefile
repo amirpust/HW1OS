@@ -149,6 +149,60 @@ Commands.cpp.s:
 	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/Commands.cpp.s
 .PHONY : Commands.cpp.s
 
+JobsList.obj: JobsList.cpp.obj
+
+.PHONY : JobsList.obj
+
+# target to build an object file
+JobsList.cpp.obj:
+	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/JobsList.cpp.obj
+.PHONY : JobsList.cpp.obj
+
+JobsList.i: JobsList.cpp.i
+
+.PHONY : JobsList.i
+
+# target to preprocess a source file
+JobsList.cpp.i:
+	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/JobsList.cpp.i
+.PHONY : JobsList.cpp.i
+
+JobsList.s: JobsList.cpp.s
+
+.PHONY : JobsList.s
+
+# target to generate assembly for a file
+JobsList.cpp.s:
+	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/JobsList.cpp.s
+.PHONY : JobsList.cpp.s
+
+SmallShell.obj: SmallShell.cpp.obj
+
+.PHONY : SmallShell.obj
+
+# target to build an object file
+SmallShell.cpp.obj:
+	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/SmallShell.cpp.obj
+.PHONY : SmallShell.cpp.obj
+
+SmallShell.i: SmallShell.cpp.i
+
+.PHONY : SmallShell.i
+
+# target to preprocess a source file
+SmallShell.cpp.i:
+	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/SmallShell.cpp.i
+.PHONY : SmallShell.cpp.i
+
+SmallShell.s: SmallShell.cpp.s
+
+.PHONY : SmallShell.s
+
+# target to generate assembly for a file
+SmallShell.cpp.s:
+	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/SmallShell.cpp.s
+.PHONY : SmallShell.cpp.s
+
 main.obj: main.cpp.obj
 
 .PHONY : main.obj
@@ -188,6 +242,12 @@ help:
 	@echo ... Commands.obj
 	@echo ... Commands.i
 	@echo ... Commands.s
+	@echo ... JobsList.obj
+	@echo ... JobsList.i
+	@echo ... JobsList.s
+	@echo ... SmallShell.obj
+	@echo ... SmallShell.i
+	@echo ... SmallShell.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
