@@ -3,6 +3,8 @@
 
 #include <vector>
 #include "SmallShell.h"
+#include "CommandExceptions.h"
+
 
 using std::vector;
 using std::string;

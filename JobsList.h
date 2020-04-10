@@ -6,6 +6,7 @@
 #define HW1_JOBSLIST_H
 
 #include "Commands.h"
+#include "CommandExceptions.h"
 
 
 class JobsList {
@@ -54,6 +55,8 @@ public:
     ~JobsList();
     void addJob(Command* cmd, bool isStopped = false){
         update();
+        if(jobs.size() >= 100) //TODO: define & throw
+            ;//
         jobs.push_back(new JobEntry(cmd, isStopped, ++maxId));
     }
     void printJobsList(){
@@ -78,8 +81,8 @@ public:
         for (auto i : jobs)
             if(i->getJobId() == jobId)
                 return i;
-        //TODO: Throw an exception
-        return nullptr;
+        //TODO:
+        throw jobNotExists("");
     }
     void removeJobById(int jobId){
 
@@ -87,8 +90,13 @@ public:
     JobEntry * getLastJob(int* lastJobId);
     JobEntry *getLastStoppedJob(int *jobId);
 
-    void update(){
-        removeFinishedJobs();}
+    void update() {
+        removeFinishedJobs();
+        if(jobs.empty())
+            maxId = 0;
+        else
+            maxId = jobs.back()->getJobId();
+    }
 
 private:
     void removeFinishedJobs(){
