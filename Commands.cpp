@@ -145,9 +145,3 @@ void jobsCommand::execute() {
     SmallShell::getInstance().printJobs();
 }
 
-killCommand::killCommand(const char *_signum, const char *_jobId) :sigNum(0),jobId(0)
-        ,BuiltInCommand(nullptr){
-    sscanf(_signum,"%d", &sigNum);
-    sscanf(_jobId,"%d", &jobId);
-
-}

@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
-#include "JobsList.h"
+#include "JobsL ist.h"
 #include <stack>
 
 class SmallShell {

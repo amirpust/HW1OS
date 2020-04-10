@@ -1,6 +1,3 @@
-//
-// Created by jonat on 10/04/2020.
-//
 
 #ifndef HW1_COMMANDEXCEPTIONS_H
 #define HW1_COMMANDEXCEPTIONS_H

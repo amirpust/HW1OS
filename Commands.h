@@ -5,7 +5,6 @@
 #include "SmallShell.h"
 #include "CommandExceptions.h"
 
-
 using std::vector;
 using std::string;
 
@@ -111,7 +110,8 @@ class killCommand : public BuiltInCommand{
     int jobId;
 
 public:
-    killCommand(const char* _signum, const char* _jobId);;
+    killCommand(const char* cmd_line) : BuiltInCommand(cmd_line),sigNum(0), jobId(0){
+    };
     void execute() override ;
 };
 
@@ -120,8 +120,7 @@ class fgCommand : public BuiltInCommand{
     int jobId;
 
 public:
-    fgCommand(const char* _jobId) : jobId(0), BuiltInCommand(nullptr){
-        sscanf(_jobId, "%d", &jobId);
+    fgCommand(const char* cmd_line) : jobId(0), BuiltInCommand(cmd_line){
     };
     void execute() override ;
 };
@@ -129,14 +128,14 @@ public:
 
 class bgCommand : public BuiltInCommand{
 public:
-    bgCommand() : BuiltInCommand(nullptr){};
+    bgCommand(const char* cmd_line) : BuiltInCommand(cmd_line){};
     void execute() override ;
 };
 
 
 class quitCommand : public BuiltInCommand{
 public:
-    quitCommand(): BuiltInCommand(nullptr){};
+    quitCommand(const char* cmd_line): BuiltInCommand(cmd_line){};
     void execute() override ;
 };
 
