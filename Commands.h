@@ -10,10 +10,11 @@ using std::string;
 #define HISTORY_MAX_RECORDS (50)
 
 class Command {
+    const char* cmd_line;
     // TODO: Add your data members
  public:
-  Command(const char* cmd_line);
-  virtual ~Command();
+  Command(const char* cmd_line) : cmd_line(cmd_line) {};
+  virtual ~Command() = default;
   virtual void execute() = 0;
   //virtual void prepare();
   //virtual void cleanup();
@@ -22,8 +23,8 @@ class Command {
 
 class BuiltInCommand : public Command {
  public:
-  BuiltInCommand(const char* cmd_line);
-  virtual ~BuiltInCommand() {}
+  BuiltInCommand(const char* cmd_line) : Command(cmd_line) {};
+  virtual ~BuiltInCommand() = default;
 };
 
 class ExternalCommand : public Command {
@@ -126,7 +127,7 @@ private:
     // TODO: Add your data members
 public:
     JobsList() : counter(0), maxId(0), jobs() {};
-    ~JobsList();
+    ~JobsList() = default;
     void addJob(Command* cmd, bool isStopped = false);
     void printJobsList();
     void killAllJobs();
