@@ -111,26 +111,27 @@ void showpidCommand::execute() {
 }
 
 void pwdCommand::execute() {
-    char* buffer = new char[MAX_PATH] ;
-    cout << getcwd(buffer, MAX_PATH);
+    char* buffer = new char[4096] ;
+    cout << getcwd(buffer, 4096); //TODO: check if there is better solution
     delete[] buffer;
 }
 
 cdCommand::cdCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
 
 void cdCommand::execute() {
-    if(SmallShell::getInstance().dirHistorySize() > 2){
-        //TODO: throw to many arguments
-    }
-    if (SmallShell::getInstance().dirHistorySize() == 0){
-        //TODO: throw OLDPWD not set
+    if(size > 2){
+        throw tooManyArgs(args[0]);
     }
     if(strcmp(args[1],"-") == 0){
+        if (SmallShell::getInstance().dirHistorySize() == 0){
+            throw emptyDirHistory(args[0]);
+        }
         if(chdir(SmallShell::getInstance().popLastDir()) == -1){
             //TODO: throw <syscall name (cd)> error
         }
         return;
     }
+
     if(chdir(args[1]) == -1){
         //TODO: throw <syscall name (cd)> error
     }else{
@@ -139,3 +140,14 @@ void cdCommand::execute() {
 }
 
 jobsCommand::jobsCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
+
+void jobsCommand::execute() {
+    SmallShell::getInstance().printJobs();
+}
+
+killCommand::killCommand(const char *_signum, const char *_jobId) :sigNum(0),jobId(0)
+        ,BuiltInCommand(nullptr){
+    sscanf(_signum,"%d", &sigNum);
+    sscanf(_jobId,"%d", &jobId);
+
+}

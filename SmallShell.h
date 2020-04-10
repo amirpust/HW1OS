@@ -16,6 +16,7 @@ private:
     //TODO: Add your data members
     JobsList jobs;
     const std::string defaultName;
+    char* currentDir;
     std::string name;
     std::stack<const char*> dirHistory;
     SmallShell();
@@ -39,7 +40,13 @@ public:
     void pushDir(const char* dir);
     int dirHistorySize();
 
+    char *getCurrentDir() const;
 
+    void setCurrentDir(char *currentDir);
+
+    void printJobs()const {
+        jobs.printJobsList();
+    }
 };
 
 

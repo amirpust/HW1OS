@@ -31,11 +31,13 @@ public:
     // TODO: Add your extra methods if needed
 };
 
+
 class BuiltInCommand : public Command {
  public:
   BuiltInCommand(const char* cmd_line) : Command(cmd_line) {};
   virtual ~BuiltInCommand() = default;
 };
+
 
 class ExternalCommand : public Command {
  public:
@@ -44,6 +46,7 @@ class ExternalCommand : public Command {
   void execute() override;
 };
 
+
 class PipeCommand : public Command {
   // TODO: Add your data members
  public:
@@ -51,6 +54,7 @@ class PipeCommand : public Command {
   virtual ~PipeCommand() {}
   void execute() override;
 };
+
 
 class RedirectionCommand : public Command {
  // TODO: Add your data members
@@ -62,6 +66,7 @@ class RedirectionCommand : public Command {
   //void cleanup() override;
 };
 
+//changes prompt's name
 class chpromptCommand : public BuiltInCommand{
 public:
     explicit chpromptCommand(const char* cmd_line);
@@ -69,6 +74,7 @@ public:
 
 };
 
+//printing the pid of the shell
 class showpidCommand : public BuiltInCommand{
 
 public:
@@ -77,38 +83,40 @@ public:
     void execute() override;;
 };
 
+//printing the path of the shell
 class pwdCommand : public BuiltInCommand{
 public:
     pwdCommand(const char* cmd_line) : BuiltInCommand(cmd_line){};
     void execute() override;;
 };
 
+//changes shell directory
 class cdCommand : public BuiltInCommand{
 public:
     explicit cdCommand(const char* cmd_line);;
     void execute() override;;
 };
 
+//printing all the jobs in jobList in sorted order
 class jobsCommand : public BuiltInCommand{
 
 public:
-    jobsCommand(const char* cmd_line);;
-    void execute() override ;
+    jobsCommand(const char* cmd_line);
+    void execute(); override ;
 };
+
 
 class killCommand : public BuiltInCommand{
     int sigNum;
     int jobId;
 
 public:
-    killCommand(const char* _signum, const char* _jobId):sigNum(0),jobId(0)
-    ,BuiltInCommand(nullptr){
-        sscanf(_signum,"%d", &sigNum);
-        sscanf(_jobId,"%d", &jobId);
+    killCommand(const char* _signum, const char* _jobId);;
+    void execute() {
 
-    };
-    void execute() override ;//TODO
+    } override ;
 };
+
 
 class fgCommand : public BuiltInCommand{
     int jobId;
@@ -120,17 +128,20 @@ public:
     void execute() override ;
 };
 
+
 class bgCommand : public BuiltInCommand{
 public:
     bgCommand() : BuiltInCommand(nullptr){};
     void execute() override ;
 };
 
+
 class quitCommand : public BuiltInCommand{
 public:
     quitCommand(): BuiltInCommand(nullptr){};
     void execute() override ;
 };
+
 
 class ChangeDirCommand : public BuiltInCommand {
 // TODO: Add your data members public:
@@ -139,12 +150,14 @@ class ChangeDirCommand : public BuiltInCommand {
   void execute() override;
 };
 
+
 class GetCurrDirCommand : public BuiltInCommand {
  public:
   GetCurrDirCommand(const char* cmd_line);
   virtual ~GetCurrDirCommand() {}
   void execute() override;
 };
+
 
 class ShowPidCommand : public BuiltInCommand {
  public:
@@ -153,12 +166,14 @@ class ShowPidCommand : public BuiltInCommand {
   void execute() override;
 };
 
+
 class QuitCommand : public BuiltInCommand {
 // TODO: Add your data members public:
   QuitCommand(const char* cmd_line, JobsList* jobs);
   virtual ~QuitCommand() {}
   void execute() override;
 };
+
 
 class CommandsHistory {
  protected:
@@ -172,6 +187,7 @@ class CommandsHistory {
   void addRecord(const char* cmd_line);
   void printHistory();
 };
+
 
 class HistoryCommand : public BuiltInCommand {
  // TODO: Add your data members
@@ -190,6 +206,7 @@ class JobsCommand : public BuiltInCommand {
   void execute() override;
 };
 
+
 class KillCommand : public BuiltInCommand {
  // TODO: Add your data members
  public:
@@ -198,6 +215,7 @@ class KillCommand : public BuiltInCommand {
   void execute() override;
 };
 
+
 class ForegroundCommand : public BuiltInCommand {
  // TODO: Add your data members
  public:
@@ -205,6 +223,7 @@ class ForegroundCommand : public BuiltInCommand {
   virtual ~ForegroundCommand() {}
   void execute() override;
 };
+
 
 class BackgroundCommand : public BuiltInCommand {
  // TODO: Add your data members

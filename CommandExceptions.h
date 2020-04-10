@@ -23,7 +23,7 @@ public:
     commandException(const char *cmd) : cmd(cmd) {}
 
     const char *what() const noexcept override {
-        string str = "";
+        string str = "smash error: ";
         str.append(cmd);
         str.append(": ");
         str.append(print());
@@ -38,6 +38,25 @@ protected:
         return " invalid arguments";
     }
 };
+
+class tooManyArgs : public commandException{
+public:
+    explicit tooManyArgs(const char* cmd): commandException(cmd){};
+    const char * print() const override {
+        return " too many arguments";
+    }
+};
+
+class emptyDirHistory : public commandException{
+public:
+    explicit emptyDirHistory(const char* cmd) : commandException(cmd){};
+protected:
+    const char *print() const override {
+        return " OLDPWD not set";
+    }
+};
+
+
 
 class jobNotExists : public commandException{
     int jobId;
