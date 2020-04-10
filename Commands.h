@@ -29,6 +29,7 @@ public:
     bool isFinished(){
         return true;
     };
+
 };
 
 
@@ -93,8 +94,8 @@ public:
 //changes shell directory
 class cdCommand : public BuiltInCommand{
 public:
-    explicit cdCommand(const char* cmd_line);;
-    void execute() override;;
+    explicit cdCommand(const char* cmd_line);
+    void execute() override;
 };
 
 //printing all the jobs in jobList in sorted order
@@ -111,8 +112,8 @@ class killCommand : public BuiltInCommand{
     int jobId;
 
 public:
-    killCommand(const char* cmd_line) : BuiltInCommand(cmd_line),sigNum(0), jobId(0){};
-    void execute() override ;
+    explicit killCommand(const char* cmd_line);
+    void execute() override;
 };
 /*
 
@@ -239,7 +240,8 @@ class CopyCommand : public BuiltInCommand {
   virtual ~CopyCommand() {}
   void execute() override;
 };
-
+void _removeBackgroundSign(char* cmd_line);
+bool _isBackgroundComamnd(const char* cmd_line);
 // TODO: add more classes if needed 
 // maybe chprompt , timeout ?
 

@@ -21,9 +21,10 @@ public:
         time_t startTime;
         time_t stopTime;
         int jobId;
+        pid_t pid;
     public:
-        JobEntry(Command* _cmd, bool _stopped, int _jobId) :
-                cmd(_cmd), stopped(_stopped), jobId(_jobId){
+        JobEntry(Command* _cmd, bool _stopped, int _jobId, pid_t p) :
+                cmd(_cmd), stopped(_stopped), jobId(_jobId),pid(p){
                 time(&startTime);
         }
         ~JobEntry() = default;
@@ -56,6 +57,9 @@ public:
             return !(rhs == *this);
         };
 
+        pid_t getJobPid(){
+            return pid;
+        }
     };
     class notExist: public std::exception{
         int jobId;
@@ -76,7 +80,7 @@ private:
 public:
     JobsList() : counter(0), maxId(0), jobs() {};
     ~JobsList();
-    void addJob(Command* cmd, bool isStopped = false);
+    void addJob(Command* cmd,pid_t p,bool isStopped = false);
     void printJobsList();
     void killAllJobs(); //TODO
 

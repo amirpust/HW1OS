@@ -146,5 +146,24 @@ void cdCommand::execute() {
 jobsCommand::jobsCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
 
 void jobsCommand::execute() {
-    SmallShell::getInstance().printJobs();
+    SmallShell::getInstance().getJobs().printJobsList();
+}
+
+killCommand::killCommand(const char *cmd_line) : BuiltInCommand(cmd_line),sigNum(0), jobId(0){
+    if(args[1] == nullptr || args[2] == nullptr || args[3] != nullptr)
+        throw invalidArgs(args[0]);
+
+    sscanf(args[1], "%d", &sigNum);
+    sigNum *= -1;
+    sscanf(args[2],"%d", &jobId);
+
+}
+
+void killCommand::execute() {
+    try {
+        JobsList::JobEntry* job = SmallShell::getInstance().getJobs().getJobById(jobId);
+        kill(job->getJobPid(),sigNum);
+    }catch(exception& e){
+        throw jobDoesntExist(args[0],jobId);
+    }
 }

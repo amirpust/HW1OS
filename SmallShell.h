@@ -47,9 +47,7 @@ public:
     char *getCurrentDir() const;
     void setCurrentDir(char *currentDir);
 
-    void printJobs() {
-        jobs.printJobsList();
-    }
+    JobsList &getJobs() ;
 };
 
 

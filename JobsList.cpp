@@ -17,11 +17,11 @@ JobsList::~JobsList() {
         delete i;
 }
 
-void JobsList::addJob(Command *cmd, bool isStopped) {
+void JobsList::addJob(Command *cmd,pid_t p,bool isStopped) {
     update();
     if(jobs.size() >= 100) //TODO: define & throw
         ;//
-    jobs.push_back(new JobEntry(cmd, isStopped, ++maxId));
+    jobs.push_back(new JobEntry(cmd, isStopped, ++maxId,p));
 }
 
 void JobsList::printJobsList() {

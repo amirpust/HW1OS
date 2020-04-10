@@ -8,10 +8,24 @@
 #define MAX_ARGS 20
 
 void SmallShell::executeCommand(const char *cmd_line) {
-    // TODO: Add your implementation here
-    // for example:
-    Command* cmd = CreateCommand(cmd_line);
-    cmd->execute();
+
+    char* cmd_l = new char[strlen(cmd_line) + 1];
+    strcpy(cmd_l,cmd_line);
+    if(!_isBackgroundComamnd(cmd_l)){
+        Command* cmd = CreateCommand(cmd_line);
+        cmd->execute();
+    }
+    else{
+        _removeBackgroundSign(cmd_l);
+        Command* cmd = CreateCommand(cmd_line);
+        cmd->execute();
+        pid_t p = fork();
+        if(p == 0){
+            cmd->execute();
+        }else{
+            jobs.addJob(cmd,p);
+        }
+    }
     // Please note that you must fork smash process for some commands (e.g., external commands....)
 }
 
@@ -93,4 +107,8 @@ char *SmallShell::getCurrentDir() const {
 
 void SmallShell::setCurrentDir(char *currentDir) {
     SmallShell::currentDir = currentDir;
+}
+
+JobsList &SmallShell::getJobs() {
+    return jobs;
 }

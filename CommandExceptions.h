@@ -26,7 +26,8 @@ public:
 
 class invalidArgs : public commandException{
 
-protected:
+public:
+    explicit invalidArgs(const char* cmd) : commandException(cmd){};
     string print() const override  {
         return  " error: " + string(cmd) + ": invalid arguments";
     }
@@ -51,16 +52,15 @@ protected:
 
 
 
-class jobNotExists : public commandException{
+class jobDoesntExist : public commandException{
     int jobId;
 
-protected:
-    string print() const override {
-        return ("job-id " + std::to_string(jobId) + string(" does not exist")).c_str();
-    }
-
 public:
-    jobNotExists(const char* _cmd, int _jobId): commandException(_cmd), jobId(_jobId){};
+
+    jobDoesntExist(const char* _cmd, int _jobId): commandException(_cmd), jobId(_jobId){};
+    string print() const override {
+        return  " error: " + string(cmd) + ": " + std::to_string(jobId) + " does not exist";
+    }
 };
 
 #endif //HW1_COMMANDEXCEPTIONS_H
