@@ -121,7 +121,7 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
     if (command == commands[3]){
         if (args_num > 2)
             throw new Command::tooManyArgs("cd");
-        return new cdCommand(const char* args[1]);
+        return new cdCommand(args[1]);
     }
     if (command == commands[4]){
         return new jobsCommand();
@@ -129,7 +129,7 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
     if (command == commands[5]){
         if (args_num != 3)
             throw Command::invalidArgs("kill");
-        return new jobsCommand(const char* args[1], const char* args[2]);
+        return new jobsCommand(args[1], args[2]);
     }
     if (command == commands[6]){
         if(args_num != 2)
