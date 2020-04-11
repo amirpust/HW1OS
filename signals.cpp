@@ -6,7 +6,7 @@
 using namespace std;
 
 void ctrlZHandler(int sig_num) {
-    if(SmallShell::getJobs().getSize() == 0)
+    if(SmallShell::getInstance().getJobs().getSize() == 0)
         return;
 
     SmallShell::getInstance().getJobs().getLastJob(NULL)->stopCmd();
@@ -16,7 +16,7 @@ void ctrlZHandler(int sig_num) {
 }
 
 void ctrlCHandler(int sig_num) {
-    if(SmallShell::getJobs().getSize() == 0)
+    if(SmallShell::getInstance().getJobs().getSize() == 0)
         return;
 
     pid_t pid = SmallShell::getInstance().getJobs().getLastJob()->getJobPid();

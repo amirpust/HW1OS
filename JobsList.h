@@ -64,7 +64,7 @@ public:
         }
 
         void stopCmd(){
-            startTime = time(nullptr);
+            stopTime = time(nullptr);
             stopped = true;
         }
         void continueCmd(){

@@ -208,7 +208,7 @@ void bgCommand::execute() {
             }
         }
         job->continueCmd();
-        kill(job->getJobPid(),SIGCONT);
+        kill(job->getJobPid(),25);
     }catch (exception& e){
         //TODO : check what exception is being thrown empty or not exist
     }
