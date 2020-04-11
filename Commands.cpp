@@ -107,7 +107,7 @@ const cmdType Command::getType() const {
 }
 
 bool Command::isFinished() {
-    return true;
+
 }
 
 const char *Command::getCmdLine() const {
