@@ -110,7 +110,7 @@ public:
     void update();
     bool contains(int jobId);
 
-    void killCommand(JobEntry* job);
+    void killCommand(JobEntry* job, bool toPrint = true);
 private:
     void removeFinishedJobs();
     void printKilledCommand(JobEntry* job);

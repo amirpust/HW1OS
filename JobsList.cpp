@@ -130,10 +130,13 @@ void JobsList::printKilledCommand(JobsList::JobEntry *job) {
     cout << job->getJobPid() << ": " << job->getCmd()->getCmdLine() << endl;
 }
 
-void JobsList::killCommand(JobsList::JobEntry *job) {
-    printKilledCommand(job);
+void JobsList::killCommand(JobsList::JobEntry *job, bool toPrint) {
+    if (toPrint)
+        printKilledCommand(job);
+
     delete job->getCmd();
     kill(job->getJobPid(), SIGKILL);
+    update();
 }
 
 
