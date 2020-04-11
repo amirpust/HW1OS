@@ -52,18 +52,19 @@ class ExternalCommand : public Command {
   ExternalCommand(const char* cmd_line): Command(cmd_line, external){};
   virtual ~ExternalCommand() = default;
   void execute() override{
-      char* bash_cmd[3];
-      string  s = "bash -c";
-      //string flag = "";
-      bash_cmd[0] = new char[s.size() + 1];
-     // bash_cmd[1] = new char[flag.size() + 1];
-      bash_cmd[1] = new char[strlen(cmd_line) + 1];
-      strcpy(bash_cmd[0], s.c_str());
-      strcpy(bash_cmd[1], cmd_line);
-      //strcpy(cmd[1],cmd_line);
-      bash_cmd[1] = NULL;
 
-      execvp(bash_cmd[0],&bash_cmd[1]);
+        char* cmd_args[4];
+        string bash = "bash";
+        string flag = "-c";
+        cmd_args[0] = new char[bash.size() + 1];
+        cmd_args[1] = new char[flag.size() + 1];
+        cmd_args[2] = new char[strlen(cmd_line) + 1];
+        strcpy(cmd_args[0], flag.c_str());
+        strcpy(cmd_args[1], flag.c_str());
+        strcpy(cmd_args[2], cmd_line);
+        cmd_args[3] = NULL;
+
+        execv("/bin/bash",cmd_args);
   }
 };
 

@@ -110,10 +110,7 @@ void showpidCommand::execute() {
 }
 
 void pwdCommand::execute() {
-    char* buffer = new char[4096] ;
-    getcwd(buffer, 4096); //TODO: check if there is better solution
-    cout << buffer << endl;
-    delete[] buffer;
+    cout << get_current_dir_name() << endl;
 }
 
 cdCommand::cdCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
