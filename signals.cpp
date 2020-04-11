@@ -6,6 +6,9 @@
 using namespace std;
 
 void ctrlZHandler(int sig_num) {
+    if(SmallShell::getJobs().getSize() == 0)
+        return;
+
     SmallShell::getInstance().getJobs().getLastJob(NULL)->stopCmd();
     kill(SmallShell::getInstance().getJobs().getLastJob()->getJobPid(), sig_num);
     cout << "smash: got ctrl-Z" << endl;
@@ -13,6 +16,8 @@ void ctrlZHandler(int sig_num) {
 }
 
 void ctrlCHandler(int sig_num) {
+    if(SmallShell::getJobs().getSize() == 0)
+        return;
 
     pid_t pid = SmallShell::getInstance().getJobs().getLastJob()->getJobPid();
     SmallShell::getInstance().getJobs().killCommand(
