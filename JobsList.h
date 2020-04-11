@@ -7,7 +7,7 @@
 
 #include "Commands.h"
 #include <exception>
-#include <time.h>
+#include <ctime>
 
 using std::cout;
 using std::endl;
@@ -94,12 +94,7 @@ public:
     ~JobsList();
     void addJob(Command* cmd,pid_t p,bool isStopped = false);
     void printJobsList();
-    void killAllJobs(){
-        for(auto i : jobs){
-            killCommand(i);
-        }
-
-    }//TODO
+    void killAllJobs();
     int getSize();
 
     JobEntry * getJobById(int jobId);

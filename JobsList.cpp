@@ -3,14 +3,7 @@
 //
 
 #include "JobsList.h"
-#include <time.h>
-
-
-
-
-
-
-
+#include <ctime>
 
 JobsList::~JobsList() {
     for (auto i : jobs)
@@ -104,6 +97,9 @@ int JobsList::getSize() {
 }
 
 JobsList::JobEntry *JobsList::getLastJob(int *lastJobId) {
+    if(jobs.empty())
+        throw emptyList();
+
     JobEntry* temp = jobs.back();
     if(lastJobId)
         *lastJobId = temp->getJobId();
@@ -113,6 +109,7 @@ JobsList::JobEntry *JobsList::getLastJob(int *lastJobId) {
 JobsList::JobEntry *JobsList::getLastStoppedJob(int *jobId) {
     if(jobs.empty())
         throw emptyList();
+
     auto i = jobs.end();
     i--;
     do{
@@ -137,6 +134,13 @@ void JobsList::killCommand(JobsList::JobEntry *job, bool toPrint) {
     delete job->getCmd();
     kill(job->getJobPid(), SIGKILL);
     update();
+}
+
+void JobsList::killAllJobs() {
+    for(auto i : jobs){
+        killCommand(i);
+    }
+
 }
 
 
