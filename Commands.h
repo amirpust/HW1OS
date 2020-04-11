@@ -2,6 +2,8 @@
 #define SMASH_COMMAND_H_
 
 #include <vector>
+#include <sys/wait.h>
+#include <unistd.h>
 #include "CommandExceptions.h"
 
 using std::vector;
@@ -10,12 +12,12 @@ using std::string;
 #define COMMAND_ARGS_MAX_LENGTH (200)
 #define COMMAND_MAX_ARGS (20)
 #define HISTORY_MAX_RECORDS (50)
-typedef enum {builtIn, external, pipe, redirection} cmdType;
+typedef enum {builtIn, external, pipeCmd, redirection} cmdType;
 
 class Command {
     const char* cmd_line;
 protected:
-    char** args;
+    char* args[COMMAND_MAX_ARGS];
     int size;
     const cmdType type;
 public:
@@ -47,15 +49,17 @@ class BuiltInCommand : public Command {
 class ExternalCommand : public Command {
  public:
   ExternalCommand(const char* cmd_line): Command(cmd_line, external){};
-  virtual ~ExternalCommand() {}
-  void execute() override;
+  virtual ~ExternalCommand() = default;
+  void execute() override{
+      execvp(args[0], args);
+  }
 };
 
 
 class PipeCommand : public Command {
   // TODO: Add your data members
  public:
-  PipeCommand(const char* cmd_line): Command(cmd_line,pipe){};
+  PipeCommand(const char* cmd_line): Command(cmd_line,pipeCmd){};
   virtual ~PipeCommand() {}
   void execute() override;
 };

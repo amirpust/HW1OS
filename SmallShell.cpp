@@ -12,7 +12,7 @@ void SmallShell::executeCommand(const char *cmd_line) {
     strcpy(cmd_l,cmd_line);
     bool onBG = _isBackgroundComamnd(cmd_l);
     _removeBackgroundSign(cmd_l);
-    Command* cmd = CreateCommand(cmd_line);
+    Command* cmd = CreateCommand(cmd_l);
 
     if(cmd->getType() == builtIn){
         cmd->execute();
@@ -25,7 +25,7 @@ void SmallShell::executeCommand(const char *cmd_line) {
             jobs.addJob(cmd,pid);
             if(!onBG){
                 int status;
-                waitpid(pid, &status);
+                waitpid(pid, &status, WUNTRACED | WCONTINUED);
                 if(status == -1)            //TODO : handle exception
                     exit(-1);
                 return;
@@ -86,7 +86,7 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
     if (str.find(commands[8]) == 0)
         return new quitCommand(cmd_line);
 */
-    return nullptr;
+    return new ExternalCommand(cmd_line);
 }
 
 const char *SmallShell::popLastDir() {

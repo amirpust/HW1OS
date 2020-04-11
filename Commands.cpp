@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
-#include <sys/wait.h>
 #include <iomanip>
 #include "SmallShell.h"
 #include "Commands.h"
@@ -91,10 +90,8 @@ void chpromptCommand::execute() {
     SmallShell::getInstance().setName(args[1]);
 }
 
-Command::Command(const char *cmd_line, cmdType) : cmd_line(cmd_line),type(cmdType) {
-    args = new char*[COMMAND_MAX_ARGS];
+Command::Command(const char *cmd_line, cmdType _type) : cmd_line(cmd_line),type(_type) {
     size = _parseCommandLine(cmd_line, args);
-
 }
 
 const char *Command::print() const {
@@ -178,7 +175,8 @@ fgCommand::fgCommand(const char *cmd_line) : jobId(0), BuiltInCommand(cmd_line){
 void fgCommand::execute() {
     try {
       JobsList::JobEntry* job = SmallShell::getInstance().getJobs().getJobById(jobId);
-      waitpid(job->getJobPid());
+      int status;
+      waitpid(job->getJobPid(), &status, WUNTRACED | WCONTINUED);
       SmallShell::getInstance().getJobs().removeJobById(jobId);
     }catch(exception& e){
         //TODO : check what exception is being thrown empty or not exist
