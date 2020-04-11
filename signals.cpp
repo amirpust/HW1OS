@@ -10,11 +10,16 @@ void ctrlZHandler(int sig_num) {
     kill(SmallShell::getInstance().getJobs().getLastJob()->getJobPid(), sig_num);
     cout << "smash: got ctrl-Z" << endl;
 
-	// TODO: Add your implementation
 }
 
 void ctrlCHandler(int sig_num) {
-  // TODO: Add your implementation
+
+    pid_t pid = SmallShell::getInstance().getJobs().getLastJob()->getJobPid();
+    SmallShell::getInstance().getJobs().killCommand(
+            SmallShell::getInstance().getJobs().getLastJob(),false);
+    cout<< "smash: got ctrl-C"<<endl;
+    cout<< "smash: process " + std::to_string(pid) + " was killed"<<endl;
+
 }
 
 void alarmHandler(int sig_num) {
