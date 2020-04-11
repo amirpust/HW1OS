@@ -25,7 +25,7 @@ public:
     public:
         JobEntry(Command* _cmd, bool _stopped, int _jobId, pid_t p) :
             cmd(_cmd), stopped(_stopped), jobId(_jobId),pid(p){
-            time(&startTime);
+            startTime = time(nullptr);
         }
         ~JobEntry() {
             delete cmd;

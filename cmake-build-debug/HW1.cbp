@@ -80,31 +80,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="C:/Programming Lab/OpSys/CommandExceptions.h">
-			<Option target="HW1"/>
-		</Unit>
-		<Unit filename="C:/Programming Lab/OpSys/Commands.cpp">
-			<Option target="HW1"/>
-		</Unit>
-		<Unit filename="C:/Programming Lab/OpSys/Commands.h">
-			<Option target="HW1"/>
-		</Unit>
-		<Unit filename="C:/Programming Lab/OpSys/JobsList.cpp">
-			<Option target="HW1"/>
-		</Unit>
-		<Unit filename="C:/Programming Lab/OpSys/JobsList.h">
-			<Option target="HW1"/>
-		</Unit>
-		<Unit filename="C:/Programming Lab/OpSys/SmallShell.cpp">
-			<Option target="HW1"/>
-		</Unit>
-		<Unit filename="C:/Programming Lab/OpSys/SmallShell.h">
-			<Option target="HW1"/>
-		</Unit>
 		<Unit filename="C:/Programming Lab/OpSys/main.cpp">
-			<Option target="HW1"/>
-		</Unit>
-		<Unit filename="C:/Programming Lab/OpSys/smash.cpp">
 			<Option target="HW1"/>
 		</Unit>
 		<Unit filename="C:/Programming Lab/OpSys/CMakeLists.txt">

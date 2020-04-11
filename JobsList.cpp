@@ -26,7 +26,7 @@ void JobsList::printJobsList() {
         cout << "[" << i->getJobId() << "] " << i->getCmd()->print();
         cout << " : " << i->getCmd()->getCommandPid() << " ";
         if(i->isStopped()){
-            cout <<  difftime(i->getStopTime(), i-> getStartTime()) << " secs (stopped)";
+            cout <<  std::difftime(i->getStopTime(), i-> getStartTime()) << " secs (stopped)";
         }else{
             time_t temp;
             time(&temp);

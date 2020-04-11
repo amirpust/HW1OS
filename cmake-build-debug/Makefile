@@ -122,87 +122,6 @@ HW1/fast:
 	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/build
 .PHONY : HW1/fast
 
-Commands.obj: Commands.cpp.obj
-
-.PHONY : Commands.obj
-
-# target to build an object file
-Commands.cpp.obj:
-	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/Commands.cpp.obj
-.PHONY : Commands.cpp.obj
-
-Commands.i: Commands.cpp.i
-
-.PHONY : Commands.i
-
-# target to preprocess a source file
-Commands.cpp.i:
-	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/Commands.cpp.i
-.PHONY : Commands.cpp.i
-
-Commands.s: Commands.cpp.s
-
-.PHONY : Commands.s
-
-# target to generate assembly for a file
-Commands.cpp.s:
-	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/Commands.cpp.s
-.PHONY : Commands.cpp.s
-
-JobsList.obj: JobsList.cpp.obj
-
-.PHONY : JobsList.obj
-
-# target to build an object file
-JobsList.cpp.obj:
-	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/JobsList.cpp.obj
-.PHONY : JobsList.cpp.obj
-
-JobsList.i: JobsList.cpp.i
-
-.PHONY : JobsList.i
-
-# target to preprocess a source file
-JobsList.cpp.i:
-	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/JobsList.cpp.i
-.PHONY : JobsList.cpp.i
-
-JobsList.s: JobsList.cpp.s
-
-.PHONY : JobsList.s
-
-# target to generate assembly for a file
-JobsList.cpp.s:
-	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/JobsList.cpp.s
-.PHONY : JobsList.cpp.s
-
-SmallShell.obj: SmallShell.cpp.obj
-
-.PHONY : SmallShell.obj
-
-# target to build an object file
-SmallShell.cpp.obj:
-	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/SmallShell.cpp.obj
-.PHONY : SmallShell.cpp.obj
-
-SmallShell.i: SmallShell.cpp.i
-
-.PHONY : SmallShell.i
-
-# target to preprocess a source file
-SmallShell.cpp.i:
-	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/SmallShell.cpp.i
-.PHONY : SmallShell.cpp.i
-
-SmallShell.s: SmallShell.cpp.s
-
-.PHONY : SmallShell.s
-
-# target to generate assembly for a file
-SmallShell.cpp.s:
-	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/SmallShell.cpp.s
-.PHONY : SmallShell.cpp.s
-
 main.obj: main.cpp.obj
 
 .PHONY : main.obj
@@ -230,33 +149,6 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-smash.obj: smash.cpp.obj
-
-.PHONY : smash.obj
-
-# target to build an object file
-smash.cpp.obj:
-	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/smash.cpp.obj
-.PHONY : smash.cpp.obj
-
-smash.i: smash.cpp.i
-
-.PHONY : smash.i
-
-# target to preprocess a source file
-smash.cpp.i:
-	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/smash.cpp.i
-.PHONY : smash.cpp.i
-
-smash.s: smash.cpp.s
-
-.PHONY : smash.s
-
-# target to generate assembly for a file
-smash.cpp.s:
-	$(MAKE) -f CMakeFiles\HW1.dir\build.make CMakeFiles/HW1.dir/smash.cpp.s
-.PHONY : smash.cpp.s
-
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -266,21 +158,9 @@ help:
 	@echo ... HW1
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... Commands.obj
-	@echo ... Commands.i
-	@echo ... Commands.s
-	@echo ... JobsList.obj
-	@echo ... JobsList.i
-	@echo ... JobsList.s
-	@echo ... SmallShell.obj
-	@echo ... SmallShell.i
-	@echo ... SmallShell.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
-	@echo ... smash.obj
-	@echo ... smash.i
-	@echo ... smash.s
 .PHONY : help
 
 

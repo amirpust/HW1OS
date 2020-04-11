@@ -19,7 +19,7 @@ private:
     std::stack<const char*> dirHistory;
     SmallShell() : jobs(), defaultName("smash"), name(defaultName),dirHistory(){
         currentDir = new char[4096] ;
-        getcwd(currentDir, 4096);
+        getcwd(currentDir, 4096); //TODO
     };
 
 public:
