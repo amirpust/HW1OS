@@ -52,7 +52,7 @@ class ExternalCommand : public Command {
   ExternalCommand(const char* cmd_line): Command(cmd_line, external){};
   virtual ~ExternalCommand() = default;
   void execute() override{
-
+        //TODO : free the allocated memory
         char* cmd_args[4];
         string bash = "bash";
         string flag = "-c";

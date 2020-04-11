@@ -76,10 +76,10 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
 
     if (str.find(commands[5]) == 0)
         return new killCommand(cmd_line);
-/*
+
     if (str.find(commands[6]) == 0)
         return new fgCommand(cmd_line);
-
+/*
     if (str.find(commands[7]) == 0)
         return new bgCommand(cmd_line);
 
