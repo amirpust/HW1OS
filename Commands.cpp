@@ -181,5 +181,4 @@ void fgCommand::execute() {
     }catch(exception& e){
         //TODO : check what exception is being thrown empty or not exist
     }
-
 }
