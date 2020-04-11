@@ -110,10 +110,10 @@ public:
     void update();
     bool contains(int jobId);
 
+    void killCommand(JobEntry* job);
 private:
     void removeFinishedJobs();
     void printKilledCommand(JobEntry* job);
-    void killCommand(JobEntry* job);
 
     // TODO: Add extra methods or modify exisitng ones as needed
 };
