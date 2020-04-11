@@ -97,9 +97,6 @@ void JobsList::removeFinishedJobs() {
 
     for(auto i:temp)
         jobs.push_back(i);
-
-
-    cout << "Flag3 removeFinishedJobs :" << endl;
 }
 
 int JobsList::getSize() {

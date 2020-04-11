@@ -62,6 +62,13 @@ public:
         pid_t getJobPid(){
             return pid;
         }
+
+        void stopCmd(){
+            stopped = true;
+        }
+        void continueCmd(){
+            stopped = false;
+        }
     };
     class notExist: public std::exception{
         int jobId;
@@ -97,7 +104,7 @@ public:
 
     JobEntry * getJobById(int jobId);
     void removeJobById(int jobId);
-    JobEntry * getLastJob(int* lastJobId);
+    JobEntry * getLastJob(int* lastJobId = NULL);
     JobEntry *getLastStoppedJob(int *jobId);
 
     void update();
