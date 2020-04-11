@@ -56,10 +56,13 @@ JobsList::JobEntry *JobsList::getJobById(int jobId) {
 void JobsList::removeJobById(int jobId) {
     update();
 
-    for (auto i : jobs)
-        if(i->getJobId() == jobId){
-            //TODO
+    for(auto i = jobs.begin(); i != jobs.end(); i++){
+        if((*i)->getJobId() == jobId){
+            JobEntry* temp = *i;
+            jobs.erase(i);
+            delete temp;
         }
+    }
     throw notExist(jobId);
 }
 
@@ -80,13 +83,12 @@ bool JobsList::contains(int jobId) {
 
 void JobsList::removeFinishedJobs() {
     for (auto i = jobs.begin(); i != jobs.end(); i++){
-        if((*i)->isStopped()){
-            JobEntry* temp = *i;
-            jobs.erase(i);
-            delete temp;
+        int status;
+        waitpid((*i)->getJobPid(), &status, WNOHANG);
+        if(kill((*i)->getJobPid(),0) == -1){ //TODO: can cause problems
+            removeJobById((*i)->getJobId());
         }
     }
-    //TODO: memory leak
 }
 
 int JobsList::getSize() {
