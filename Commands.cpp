@@ -102,6 +102,18 @@ pid_t Command::getCommandPid() const {
     return getpid();
 }
 
+const cmdType Command::getType() const {
+    return type;
+}
+
+bool Command::isFinished() {
+    return true;
+}
+
+const char *Command::getCmdLine() const {
+    return cmd_line;
+}
+
 showpidCommand::showpidCommand(const char *cmd_line) :BuiltInCommand(cmd_line){}
 
 void showpidCommand::execute() {
@@ -199,11 +211,23 @@ void bgCommand::execute() {
 
 }
 
+bgCommand::bgCommand(const char *cmd_line) : BuiltInCommand(cmd_line){
+    if(size > 2)
+        throw invalidArgs(args[0]);
+    if(size == 1)
+        jobId = 0;
+    else
+        sscanf(args[1], "%d", &jobId);
+
+}
+
 void quitCommand::execute() {
     if(size > 1){
         cout << "smash: sending SIGKILL signal to " +
-        std::to_string(SmallShell::getInstance().getJobs().getSize()) + " jobs" << endl;
+        std::to_string(SmallShell::getInstance().getJobs().getSize()) + " jobs:" << endl;
         SmallShell::getInstance().getJobs().killAllJobs();
     }
         kill(getpid(), SIGKILL);
 }
+
+quitCommand::quitCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}

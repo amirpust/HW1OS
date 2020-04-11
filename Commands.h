@@ -30,12 +30,10 @@ public:
     //virtual void prepare();
     //virtual void cleanup();
     // TODO: Add your extra methods if needed
-    bool isFinished(){
-        return true;
-    };
-    const cmdType getType() const {
-        return type;
-    }
+    bool isFinished();;
+    const cmdType getType() const;
+
+    const char *getCmdLine() const;
 
 };
 
@@ -151,15 +149,7 @@ public:
 class bgCommand : public BuiltInCommand{
     int jobId;
 public:
-    bgCommand(const char* cmd_line) : BuiltInCommand(cmd_line){
-        if(size > 2)
-            throw invalidArgs(args[0]);
-        if(size == 1)
-            jobId = 0;
-        else
-            sscanf(args[1], "%d", &jobId);
-
-    };
+    bgCommand(const char* cmd_line);
 
     void execute() override;
 };
@@ -167,7 +157,7 @@ public:
 
 class quitCommand : public BuiltInCommand{
 public:
-    quitCommand(const char* cmd_line): BuiltInCommand(cmd_line){};
+    quitCommand(const char* cmd_line);
     void execute() override;
 };
 
