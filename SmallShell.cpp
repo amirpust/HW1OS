@@ -79,13 +79,13 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
 
     if (str.find(commands[6]) == 0)
         return new fgCommand(cmd_line);
-/*
+
     if (str.find(commands[7]) == 0)
         return new bgCommand(cmd_line);
 
     if (str.find(commands[8]) == 0)
         return new quitCommand(cmd_line);
-*/
+
     return new ExternalCommand(cmd_line);
 }
 
