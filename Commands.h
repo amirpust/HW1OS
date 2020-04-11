@@ -5,6 +5,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include "CommandExceptions.h"
+#include <string.h>
 
 using std::vector;
 using std::string;
@@ -15,8 +16,8 @@ using std::string;
 typedef enum {builtIn, external, pipeCmd, redirection} cmdType;
 
 class Command {
-    const char* cmd_line;
 protected:
+    const char* cmd_line;
     char* args[COMMAND_MAX_ARGS];
     int size;
     const cmdType type;
@@ -51,7 +52,18 @@ class ExternalCommand : public Command {
   ExternalCommand(const char* cmd_line): Command(cmd_line, external){};
   virtual ~ExternalCommand() = default;
   void execute() override{
-      execvp(args[0], args);
+      char* bash_cmd[3];
+      string  s = "bash -c";
+      //string flag = "";
+      bash_cmd[0] = new char[s.size() + 1];
+     // bash_cmd[1] = new char[flag.size() + 1];
+      bash_cmd[1] = new char[strlen(cmd_line) + 1];
+      strcpy(bash_cmd[0], s.c_str());
+      strcpy(bash_cmd[1], cmd_line);
+      //strcpy(cmd[1],cmd_line);
+      bash_cmd[1] = NULL;
+
+      execvp(bash_cmd[0],&bash_cmd[1]);
   }
 };
 
