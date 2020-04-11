@@ -33,11 +33,11 @@ void JobsList::printJobsList() {
         cout << "[" << i->getJobId() << "] " << i->getCmd()->print();
         cout << " : " << i->getCmd()->getCommandPid() << " ";
         if(i->isStopped()){
-            cout << i->getStartTime() - i->getStopTime()<< " secs (stopped)";
+            cout << i->getStopTime() - i-> getStartTime() << " secs (stopped)";
         }else{
             time_t temp;
             time(&temp);
-            cout << i->getStartTime() - temp << " secs";
+            cout << temp - i->getStartTime()  << " secs";
         }
         cout << endl;
     }
@@ -79,11 +79,31 @@ bool JobsList::contains(int jobId) {
 }
 
 void JobsList::removeFinishedJobs() {
-    for (auto i : jobs){
-        if (i->getCmd()->isFinished());
-        //    jobs.erase(i);
-        //TODO: memory leak
+    for (auto i = jobs.begin(); i != jobs.end(); i++){
+        if((*i)->isStopped()){
+            JobEntry* temp = *i;
+            jobs.erase(i);
+            delete temp;
+        }
     }
+    //TODO: memory leak
 }
+
+JobsList::JobEntry *JobsList::getLastJob(int *lastJobId) {
+    if(jobs.empty())
+        throw emptyList();
+    auto i = jobs.end();
+    i--;
+    do{
+        if((*i)->isStopped()){
+            if(lastJobId)
+                *lastJobId = (*i)->getJobId();
+            return (*i);
+        }
+        i--;
+    }while(i != jobs.begin());
+    throw notExist();
+}
+
 
 

@@ -65,12 +65,15 @@ public:
         int jobId;
 
         public:
-        notExist(int _jobId): jobId(_jobId){};
+        notExist(int _jobId = 0): jobId(_jobId){};
 
         const char *what() const noexcept override {
             return ("job-id " + std::to_string(jobId) + string(" does not exist")).c_str();
         }
     };
+    class emptyList: public std::exception{
+
+};
 
 private:
     int counter;
@@ -83,10 +86,16 @@ public:
     void addJob(Command* cmd,pid_t p,bool isStopped = false);
     void printJobsList();
     void killAllJobs(); //TODO
+    int getSize(){
+        return jobs.size();
+    }
 
     JobEntry * getJobById(int jobId);
     void removeJobById(int jobId);
-    JobEntry * getLastJob(int* lastJobId);
+    JobEntry * getLastJob(int* lastJobId){
+        //TODO
+
+    }
     JobEntry *getLastStoppedJob(int *jobId);
 
     void update();
@@ -94,7 +103,8 @@ public:
 
 private:
     void removeFinishedJobs();
-
+    void printKilledCommand();
+    void printKillIntro();
 
     // TODO: Add extra methods or modify exisitng ones as needed
 };
