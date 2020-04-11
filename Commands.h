@@ -30,12 +30,10 @@ public:
     //virtual void prepare();
     //virtual void cleanup();
     // TODO: Add your extra methods if needed
-    bool isFinished(){
-        return true;
-    };
-    const cmdType getType() const {
-        return type;
-    }
+    bool isFinished();;
+    const cmdType getType() const;
+
+    const char *getCmdLine() const;
 
 };
 
@@ -147,21 +145,23 @@ public:
     void execute() override ;
 };
 
-/*
+
 class bgCommand : public BuiltInCommand{
+    int jobId;
 public:
-    bgCommand(const char* cmd_line) : BuiltInCommand(cmd_line){};
-    void execute() override ;
+    bgCommand(const char* cmd_line);
+
+    void execute() override;
 };
 
 
 class quitCommand : public BuiltInCommand{
 public:
-    quitCommand(const char* cmd_line): BuiltInCommand(cmd_line){};
-    void execute() override ;
+    quitCommand(const char* cmd_line);
+    void execute() override;
 };
 
-
+/*
 class ChangeDirCommand : public BuiltInCommand {
 // TODO: Add your data members public:
   ChangeDirCommand(const char* cmd_line, char** plastPwd);
