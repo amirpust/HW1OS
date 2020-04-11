@@ -103,14 +103,8 @@ public:
 
 private:
     void removeFinishedJobs();
-    void printKilledCommand(JobEntry* job){
-        cout << job->getJobPid() << ": " << job->getCmd()->getCmdLine() << endl;
-    }
-    void killCommand(JobEntry* job){
-        printKilledCommand(job);
-        delete job->getCmd();
-        kill(job->getJobPid(), SIGKILL);
-    }
+    void printKilledCommand(JobEntry* job);
+    void killCommand(JobEntry* job);
 
     // TODO: Add extra methods or modify exisitng ones as needed
 };

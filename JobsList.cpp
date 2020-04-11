@@ -116,5 +116,15 @@ JobsList::JobEntry *JobsList::getLastStoppedJob(int *jobId) {
     throw notExist();
 }
 
+void JobsList::printKilledCommand(JobsList::JobEntry *job) {
+    cout << job->getJobPid() << ": " << job->getCmd()->getCmdLine() << endl;
+}
+
+void JobsList::killCommand(JobsList::JobEntry *job) {
+    printKilledCommand(job);
+    delete job->getCmd();
+    kill(job->getJobPid(), SIGKILL);
+}
+
 
 
