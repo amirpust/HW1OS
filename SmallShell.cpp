@@ -10,7 +10,7 @@
 void SmallShell::executeCommand(const char *cmd_line) {
     char* cmd_l = new char[strlen(cmd_line) + 1];
     strcpy(cmd_l,cmd_line);
-    bool onBG = !_isBackgroundComamnd(cmd_l);
+    bool onBG = _isBackgroundComamnd(cmd_l);
     _removeBackgroundSign(cmd_l);
     Command* cmd = CreateCommand(cmd_line);
 
