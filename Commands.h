@@ -120,18 +120,17 @@ public:
     explicit killCommand(const char* cmd_line);
     void execute() override;
 };
-/*
+
 
 class fgCommand : public BuiltInCommand{
     int jobId;
 
 public:
-    fgCommand(const char* cmd_line) : jobId(0), BuiltInCommand(cmd_line){
-    };
+    fgCommand(const char* cmd_line);
     void execute() override ;
 };
 
-
+/*
 class bgCommand : public BuiltInCommand{
 public:
     bgCommand(const char* cmd_line) : BuiltInCommand(cmd_line){};

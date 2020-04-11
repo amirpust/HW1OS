@@ -167,3 +167,21 @@ void killCommand::execute() {
         throw jobDoesntExist(args[0],jobId);
     }
 }
+
+fgCommand::fgCommand(const char *cmd_line) : jobId(0), BuiltInCommand(cmd_line){
+    if(size < 2 || size > 2){
+        throw invalidArgs(args[0]);
+    }
+    sscanf(args[1],"%d", &jobId);
+}
+
+void fgCommand::execute() {
+    try {
+      JobsList::JobEntry* job = SmallShell::getInstance().getJobs().getJobById(jobId);
+      waitpid(job->getJobPid());
+      SmallShell::getInstance().getJobs().removeJobById(jobId);
+    }catch(exception& e){
+        //TODO : check what exception is being thrown empty or not exist
+    }
+
+}
