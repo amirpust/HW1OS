@@ -24,10 +24,12 @@ public:
         pid_t pid;
     public:
         JobEntry(Command* _cmd, bool _stopped, int _jobId, pid_t p) :
-                cmd(_cmd), stopped(_stopped), jobId(_jobId),pid(p){
-                time(&startTime);
+            cmd(_cmd), stopped(_stopped), jobId(_jobId),pid(p){
+            time(&startTime);
         }
-        ~JobEntry() = default;
+        ~JobEntry() {
+            delete cmd;
+        };
 
         Command *getCmd() const {
             return cmd;

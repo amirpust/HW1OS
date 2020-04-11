@@ -54,13 +54,12 @@ JobsList::JobEntry *JobsList::getJobById(int jobId) {
 }
 
 void JobsList::removeJobById(int jobId) {
-    update();
-
     for(auto i = jobs.begin(); i != jobs.end(); i++){
         if((*i)->getJobId() == jobId){
             JobEntry* temp = *i;
             jobs.erase(i);
             delete temp;
+            return;
         }
     }
     throw notExist(jobId);
@@ -68,6 +67,7 @@ void JobsList::removeJobById(int jobId) {
 
 void JobsList::update() {
     removeFinishedJobs();
+
     if(jobs.empty())
         maxId = 0;
     else
@@ -82,13 +82,24 @@ bool JobsList::contains(int jobId) {
 }
 
 void JobsList::removeFinishedJobs() {
-    for (auto i = jobs.begin(); i != jobs.end(); i++){
+
+    vector<JobEntry*> temp;
+    for(auto i : jobs){
         int status;
-        waitpid((*i)->getJobPid(), &status, WNOHANG);
-        if(kill((*i)->getJobPid(),0) == -1){ //TODO: can cause problems
-            removeJobById((*i)->getJobId());
+        waitpid(i->getJobPid(), &status, WNOHANG);
+        if(kill(i->getJobPid(),0) == 0) {
+            temp.push_back(i);
+        }else {
+            delete i;
         }
     }
+    jobs.clear();
+
+    for(auto i:temp)
+        jobs.push_back(i);
+
+
+    cout << "Flag3 removeFinishedJobs :" << endl;
 }
 
 int JobsList::getSize() {
