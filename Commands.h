@@ -147,21 +147,31 @@ public:
     void execute() override ;
 };
 
-/*
+
 class bgCommand : public BuiltInCommand{
+    int jobId;
 public:
-    bgCommand(const char* cmd_line) : BuiltInCommand(cmd_line){};
-    void execute() override ;
+    bgCommand(const char* cmd_line) : BuiltInCommand(cmd_line){
+        if(size > 2)
+            throw invalidArgs(args[0]);
+        if(size == 1)
+            jobId = 0;
+        else
+            sscanf(args[1], "%d", &jobId);
+
+    };
+
+    void execute() override;
 };
 
 
 class quitCommand : public BuiltInCommand{
 public:
     quitCommand(const char* cmd_line): BuiltInCommand(cmd_line){};
-    void execute() override ;
+    void execute() override;
 };
 
-
+/*
 class ChangeDirCommand : public BuiltInCommand {
 // TODO: Add your data members public:
   ChangeDirCommand(const char* cmd_line, char** plastPwd);

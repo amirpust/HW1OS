@@ -63,4 +63,18 @@ public:
     }
 };
 
+
+class jobAlreadyBGRuning: public commandException{
+    int jobId;
+public:
+    string print() const override {
+        return " error: " + string(cmd) + ": " + std::to_string(jobId)
+        + " is already running in the background";
+    }
+
+    jobAlreadyBGRuning(const char *cmd, int id) : commandException(cmd), jobId(id) {
+
+    }
+
+};
 #endif //HW1_COMMANDEXCEPTIONS_H

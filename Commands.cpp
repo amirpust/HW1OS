@@ -179,3 +179,31 @@ void fgCommand::execute() {
         //TODO : check what exception is being thrown empty or not exist
     }
 }
+
+void bgCommand::execute() {
+    try {
+        JobsList::JobEntry* job = nullptr;
+        if(jobId == 1){
+            job = SmallShell::getInstance().getJobs().getLastStoppedJob(&jobId);
+        }else{
+            job = SmallShell::getInstance().getJobs().getJobById(jobId);
+            if(!job->isStopped()){
+                throw jobAlreadyBGRuning(args[0],jobId);
+            }else{
+                kill(job->getJobPid(),SIGCONT);
+            }
+        }
+    }catch (exception& e){
+        //TODO : check what exception is being thrown empty or not exist
+    }
+
+}
+
+void quitCommand::execute() {
+    if(size > 1){
+        cout << "smash: sending SIGKILL signal to " +
+        std::to_string(SmallShell::getInstance().getJobs().getSize()) + " jobs" << endl;
+        SmallShell::getInstance().getJobs().killAllJobs();
+    }
+        kill(getpid(), SIGKILL);
+}
