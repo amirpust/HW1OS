@@ -85,17 +85,17 @@ public:
     ~JobsList();
     void addJob(Command* cmd,pid_t p,bool isStopped = false);
     void printJobsList();
-    void killAllJobs(); //TODO
-    int getSize(){
-        return jobs.size();
-    }
+    void killAllJobs(){
+        for(auto i : jobs){
+            killCommand(i);
+        }
+
+    }//TODO
+    int getSize();
 
     JobEntry * getJobById(int jobId);
     void removeJobById(int jobId);
-    JobEntry * getLastJob(int* lastJobId){
-        //TODO
-
-    }
+    JobEntry * getLastJob(int* lastJobId);
     JobEntry *getLastStoppedJob(int *jobId);
 
     void update();
@@ -103,8 +103,14 @@ public:
 
 private:
     void removeFinishedJobs();
-    void printKilledCommand();
-    void printKillIntro();
+    void printKilledCommand(JobEntry* job){
+        cout << job->getJobPid() << ": " << job->getCmd()->getCmdLine() << endl;
+    }
+    void killCommand(JobEntry* job){
+        printKilledCommand(job);
+        delete job->getCmd();
+        kill(job->getJobPid(), SIGKILL);
+    }
 
     // TODO: Add extra methods or modify exisitng ones as needed
 };

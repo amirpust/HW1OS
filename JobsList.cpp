@@ -89,15 +89,26 @@ void JobsList::removeFinishedJobs() {
     //TODO: memory leak
 }
 
+int JobsList::getSize() {
+    return jobs.size();
+}
+
 JobsList::JobEntry *JobsList::getLastJob(int *lastJobId) {
+    JobEntry* temp = jobs.back();
+    if(lastJobId)
+        *lastJobId = temp->getJobId();
+    return temp;
+}
+
+JobsList::JobEntry *JobsList::getLastStoppedJob(int *jobId) {
     if(jobs.empty())
         throw emptyList();
     auto i = jobs.end();
     i--;
     do{
         if((*i)->isStopped()){
-            if(lastJobId)
-                *lastJobId = (*i)->getJobId();
+            if(jobId)
+                *jobId = (*i)->getJobId();
             return (*i);
         }
         i--;
