@@ -91,7 +91,7 @@ void chpromptCommand::execute() {
     SmallShell::getInstance().setName(args[1]);
 }
 
-Command::Command(const char *cmd_line) : cmd_line(cmd_line) {
+Command::Command(const char *cmd_line, cmdType) : cmd_line(cmd_line),type(cmdType) {
     args = new char*[COMMAND_MAX_ARGS];
     size = _parseCommandLine(cmd_line, args);
 

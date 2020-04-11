@@ -8,7 +8,7 @@
 #define MAX_ARGS 20
 
 void SmallShell::executeCommand(const char *cmd_line) {
-    //TODO : check if builtIn or external
+    //TODO :check if builtIn or external
     char* cmd_l = new char[strlen(cmd_line) + 1];
     strcpy(cmd_l,cmd_line);
     if(!_isBackgroundComamnd(cmd_l)){

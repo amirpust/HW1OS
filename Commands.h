@@ -10,15 +10,16 @@ using std::string;
 #define COMMAND_ARGS_MAX_LENGTH (200)
 #define COMMAND_MAX_ARGS (20)
 #define HISTORY_MAX_RECORDS (50)
-
+typedef enum {builtIn, external, pipe, redirection} cmdType;
 
 class Command {
     const char* cmd_line;
 protected:
     char** args;
     int size;
+    const cmdType type;
 public:
-    Command(const char* cmd_line);
+    Command(const char* cmd_line, cmdType);
     virtual ~Command() = default;
     virtual void execute() = 0;
     const char* print()const;
@@ -29,20 +30,23 @@ public:
     bool isFinished(){
         return true;
     };
+    const cmdType getType() const {
+        return type;
+    }
 
 };
 
 
 class BuiltInCommand : public Command {
  public:
-  BuiltInCommand(const char* cmd_line) : Command(cmd_line) {};
+ explicit BuiltInCommand(const char* cmd_line) : Command(cmd_line, builtIn) {};
   virtual ~BuiltInCommand() = default;
 };
 
 
 class ExternalCommand : public Command {
  public:
-  ExternalCommand(const char* cmd_line);
+  ExternalCommand(const char* cmd_line): Command(cmd_line, external){};
   virtual ~ExternalCommand() {}
   void execute() override;
 };
@@ -51,7 +55,7 @@ class ExternalCommand : public Command {
 class PipeCommand : public Command {
   // TODO: Add your data members
  public:
-  PipeCommand(const char* cmd_line);
+  PipeCommand(const char* cmd_line): Command(cmd_line,pipe){};
   virtual ~PipeCommand() {}
   void execute() override;
 };
@@ -60,7 +64,8 @@ class PipeCommand : public Command {
 class RedirectionCommand : public Command {
  // TODO: Add your data members
  public:
-  explicit RedirectionCommand(const char* cmd_line);
+  explicit RedirectionCommand(const char* cmd_line)
+  : Command(cmd_line, redirection){};
   virtual ~RedirectionCommand() {}
   void execute() override;
   //void prepare() override;
@@ -79,16 +84,16 @@ public:
 class showpidCommand : public BuiltInCommand{
 
 public:
-    showpidCommand(const char* cmd_line);;
+    explicit showpidCommand(const char* cmd_line);
 
-    void execute() override;;
+    void execute() override;
 };
 
 //printing the path of the shell
 class pwdCommand : public BuiltInCommand{
 public:
-    pwdCommand(const char* cmd_line) : BuiltInCommand(cmd_line){};
-    void execute() override;;
+    explicit pwdCommand(const char* cmd_line) : BuiltInCommand(cmd_line){};
+    void execute() override;
 };
 
 //changes shell directory
@@ -102,7 +107,7 @@ public:
 class jobsCommand : public BuiltInCommand{
 
 public:
-    jobsCommand(const char* cmd_line);
+    explicit jobsCommand(const char* cmd_line);
     void execute() override ;
 };
 
@@ -242,9 +247,6 @@ class CopyCommand : public BuiltInCommand {
 };
 void _removeBackgroundSign(char* cmd_line);
 bool _isBackgroundComamnd(const char* cmd_line);
-// TODO: add more classes if needed 
-// maybe chprompt , timeout ?
-
 
 
 #endif //SMASH_COMMAND_H_
