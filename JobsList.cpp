@@ -12,8 +12,8 @@ JobsList::~JobsList() {
 
 void JobsList::addJob(Command *cmd,pid_t p,bool isStopped) {
     update();
-    if(jobs.size() >= 100) //TODO: define & throw
-        ;//
+    /*if(jobs.size() >= 100) //TODO: define & throw
+        ;//*/
     jobs.push_back(new JobEntry(cmd, isStopped, ++maxId,p));
 }
 
@@ -59,6 +59,7 @@ void JobsList::removeJobById(int jobId) {
 }
 
 void JobsList::update() {
+    runFG();
     removeFinishedJobs();
 
     if(jobs.empty())
@@ -75,7 +76,6 @@ bool JobsList::contains(int jobId) {
 }
 
 void JobsList::removeFinishedJobs() {
-
     vector<JobEntry*> temp;
     for(auto i : jobs){
         int status;
@@ -142,6 +142,69 @@ void JobsList::killAllJobs() {
     }
 
 }
+
+void JobsList::sendSigById(int sig, int jobId) {
+    JobEntry* job;
+    if( job == 0){
+        if(!fg){
+            return;
+            //TODO: How to handle
+        }
+        job = fg;
+    }
+    else
+        job = getJobById(jobId);
+
+
+    if(sig == SIGKILL){
+        removeJobById(jobId);
+    }else if (sig == SIGSTOP){
+        job->stopCmd();
+        if(jobId == fg->getJobId()){
+            fg = NULL;
+            //TODO: dill with times
+        }
+    }else if(sig == SIGCONT){
+        job->continueCmd();
+    }else{
+        //TODO: try to figure the state of the process
+        kill(getJobById(jobId)->getJobPid(),sig);
+    }
+
+    update();
+}
+
+void JobsList::bringFG(int jobId) {
+    fg = getJobById(jobId);
+    fg->continueCmd();
+    update();
+}
+
+void JobsList::resumeOnBG(int jobId) {
+    if(jobId == 0){
+        getLastStoppedJob()->continueCmd();
+    }else{
+        JobEntry* job = getJobById(jobId);
+        if (!job->isStopped())
+            throw inBG();
+
+        job->continueCmd();
+    }
+}
+
+void JobsList::runFG() {
+    if (fg != NULL && !fg->isStopped()){
+        int status;
+        waitpid(fg->getJobPid(),&status, WUNTRACED);
+
+        if(status == 0 || status == 9){
+            delete fg; //TODO: not to delete - just remove from list
+        }
+        fg = NULL;
+    }
+}
+
+
 
 
 

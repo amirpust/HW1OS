@@ -64,12 +64,13 @@ public:
         }
 
         void stopCmd(){
-
             stopTime = time(nullptr);
             stopped = true;
+            kill(pid, SIGSTOP);
         }
         void continueCmd(){
             stopped = false;
+            kill(pid, SIGCONT); //TODO:Check
         }
     };
     class notExist: public std::exception{
@@ -85,37 +86,43 @@ public:
     class emptyList: public std::exception{
 
 };
+    class inBG: public std::exception{
+
+    };
 
 private:
     int counter;
     int maxId;
     vector<JobEntry*> jobs;
+    JobEntry* fg;
+
     // TODO: Add your data members
 public:
-    JobsList() : counter(0), maxId(0), jobs() {};
+    JobsList() : counter(0), maxId(0), jobs(), fg(NULL) {};
     ~JobsList();
     void addJob(Command* cmd,pid_t p,bool isStopped = false);
     void printJobsList();
     void killAllJobs();
     int getSize();
 
-    JobEntry * getJobById(int jobId);
     void removeJobById(int jobId);
-    JobEntry * getLastJob(int* lastJobId = NULL);
-    JobEntry *getLastStoppedJob(int *jobId);
 
-    void update();
     bool contains(int jobId);
 
-    void killCommand(JobEntry* job, bool toPrint = true);
+    void sendSigById(int sig, int jobId = 0);
 
-    void sendSigById(int jobId, int sig);
     void bringFG(int jobId);
     void resumeOnBG(int jobId);
 
+    JobEntry * getJobById(int jobId);
+    JobEntry * getLastJob(int* lastJobId = NULL);
+    JobEntry *getLastStoppedJob(int *jobId = NULL);
+    void killCommand(JobEntry* job, bool toPrint = true);
 private:
     void removeFinishedJobs();
     void printKilledCommand(JobEntry* job);
+    void runFG();
+    void update();
 
     // TODO: Add extra methods or modify exisitng ones as needed
 };
