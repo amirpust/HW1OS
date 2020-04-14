@@ -108,6 +108,11 @@ public:
     bool contains(int jobId);
 
     void killCommand(JobEntry* job, bool toPrint = true);
+
+    void sendSigById(int jobId, int sig);
+    void bringFG(int jobId);
+    void resumeOnBG(int jobId);
+
 private:
     void removeFinishedJobs();
     void printKilledCommand(JobEntry* job);
