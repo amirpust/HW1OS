@@ -27,7 +27,6 @@ public:
     virtual ~Command() = default;
     virtual void execute() = 0;
     const char* print()const;
-    pid_t getCommandPid() const;
     //virtual void prepare();
     //virtual void cleanup();
     // TODO: Add your extra methods if needed
