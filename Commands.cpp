@@ -164,7 +164,7 @@ killCommand::killCommand(const char *cmd_line) : BuiltInCommand(cmd_line),sigNum
 
 void killCommand::execute() {
     try {
-        SmallShell::getInstance().getJobs().sendSigById(jobId,sigNum);
+        SmallShell::getInstance().getJobs().sendSigById(sigNum,jobId);
     }catch(JobsList::notExist& e){
         throw jobDoesntExist(args[0],jobId);
     }
