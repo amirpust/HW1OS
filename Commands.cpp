@@ -186,8 +186,12 @@ void fgCommand::execute() {
             kill(job->getJobPid(),25);
         }
         pid_t p = waitpid(job->getJobPid(), &status, WUNTRACED | WCONTINUED);
-        cout << p << endl;
-        SmallShell::getInstance().getJobs().removeJobById(jobId);
+
+        cout << "pid: " <<p << " Status: " << status << endl;
+
+        if(status == 9 || status == 0)
+            SmallShell::getInstance().getJobs().removeJobById(jobId);
+
     }catch(exception& e){
         //TODO : check what exception is being thrown empty or not exist
     }
@@ -233,9 +237,12 @@ void quitCommand::execute() {
 
 quitCommand::quitCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
 
+/*
+
 void RedirectionCommand::prepare() {
 }
 
 void RedirectionCommand::execute() {
    
 }
+*/

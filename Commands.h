@@ -54,7 +54,7 @@ class ExternalCommand : public Command {
         ///I know its ugly but this way we dont allocate dynamic memory...
         char bash[5] = "bash";
         char flag[3] = "-c";
-        char cmd[COMMAND_ARGS_MAX_LENGTH];
+        char cmd[COMMAND_ARGS_MAX_LENGTH + 1];
         strcpy(cmd,cmd_line);
         char* cmd_args[4];
         cmd_args[0] = bash;
@@ -88,7 +88,7 @@ class PipeCommand : public Command {
   void execute() override;
 };
 
-
+/*
 class RedirectionCommand : public Command {
     int fd;
     int fdDup;
@@ -105,6 +105,7 @@ public:
     }
 
     //prepare will open the wanted file
+    //TODO, find first ">"
     void prepare(){
         if(strcmp(args[1],">")){
             //overwrite a file
@@ -117,7 +118,7 @@ public:
         }
     };
   //void cleanup() override;
-};
+};*/
 
 //changes prompt's name
 class chpromptCommand : public BuiltInCommand{
