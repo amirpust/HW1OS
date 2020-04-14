@@ -144,7 +144,12 @@ void cdCommand::execute() {
 jobsCommand::jobsCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
 
 void jobsCommand::execute() {
-    SmallShell::getInstance().getJobs().printJobsList();
+    try {
+        SmallShell::getInstance().getJobs().printJobsList();
+    }catch(JobsList::emptyList& e){
+        throw emptyList(args[0]); //TODO: check the answer
+    }
+
 }
 
 killCommand::killCommand(const char *cmd_line) : BuiltInCommand(cmd_line),sigNum(0), jobId(0){
@@ -159,15 +164,14 @@ killCommand::killCommand(const char *cmd_line) : BuiltInCommand(cmd_line),sigNum
 
 void killCommand::execute() {
     try {
-        JobsList::JobEntry* job = SmallShell::getInstance().getJobs().getJobById(jobId);
-        kill(job->getJobPid(),sigNum);
-    }catch(exception& e){
+        SmallShell::getInstance().getJobs().sendSigById(jobId,sigNum);
+    }catch(JobsList::notExist& e){
         throw jobDoesntExist(args[0],jobId);
     }
 }
 
 fgCommand::fgCommand(const char *cmd_line) : jobId(0), BuiltInCommand(cmd_line){
-    if(size < 2 || size > 2){
+    if(size != 2){
         throw invalidArgs(args[0]);
     }
     sscanf(args[1],"%d", &jobId);
@@ -175,39 +179,25 @@ fgCommand::fgCommand(const char *cmd_line) : jobId(0), BuiltInCommand(cmd_line){
 
 void fgCommand::execute() {
     try {
-        int status;
-        JobsList::JobEntry* job = SmallShell::getInstance().getJobs().getJobById(jobId);
-        if(job->isStopped()){
-            job->continueCmd();
-            kill(job->getJobPid(),25);
-        }
-        pid_t p = waitpid(job->getJobPid(), &status, WUNTRACED | WCONTINUED);
-
-        cout << "pid: " <<p << " Status: " << status << endl;
-
-        if(status == 9 || status == 0)
-            SmallShell::getInstance().getJobs().removeJobById(jobId);
-
-    }catch(exception& e){
-        //TODO : check what exception is being thrown empty or not exist
+        SmallShell::getInstance().getJobs().bringFG(jobId);
+    }catch(JobsList::notExist& e){
+        throw jobDoesntExist(args[0], jobId);
+    }catch(JobsList::emptyList& e){
+        throw emptyList(args[0]);
     }
 }
 
 void bgCommand::execute() {
     try {
-        JobsList::JobEntry* job = nullptr;
-        if(jobId == 0){
-            job = SmallShell::getInstance().getJobs().getLastStoppedJob(&jobId);
-        }else{
-            job = SmallShell::getInstance().getJobs().getJobById(jobId);
-            if(!job->isStopped()){
-                throw jobAlreadyBGRuning(args[0],jobId);
-            }
-        }
-        job->continueCmd();
-        kill(job->getJobPid(),25);
-    }catch (exception& e){
+
+        SmallShell::getInstance().getJobs().resumeOnBG(jobId);
+    }catch (JobsList::notExist& e){
+        throw jobDoesntExist(args[0],jobId);
         //TODO : check what exception is being thrown empty or not exist
+    }catch (JobsList::inBG& e){
+        throw jobAlreadyBGRuning(args[0],jobId);
+    }catch(JobsList::emptyList& e){
+        throw emptyListBG(args[0]);
     }
 
 }
@@ -232,13 +222,3 @@ void quitCommand::execute() {
 }
 
 quitCommand::quitCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
-
-/*
-
-void RedirectionCommand::prepare() {
-}
-
-void RedirectionCommand::execute() {
-   
-}
-*/

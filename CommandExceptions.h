@@ -77,4 +77,26 @@ public:
     }
 
 };
+
+class emptyListBG : public  commandException{
+
+public:
+    emptyListBG(const char* cmd):commandException(cmd){};
+
+    string print() const override {
+        return " error: " + string(cmd) + ": "
+            + " there is no stopped jobs to resume";
+    }
+};
+
+class emptyList : public commandException{
+public:
+    string print() const override {
+        return " error: " + string(cmd) + ": jobs list is empty";
+    }
+
+    emptyList(const char *cmd) : commandException(cmd) {
+
+    }
+};
 #endif //HW1_COMMANDEXCEPTIONS_H
