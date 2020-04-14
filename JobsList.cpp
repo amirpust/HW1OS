@@ -10,11 +10,11 @@ JobsList::~JobsList() {
         delete i;
 }
 
-void JobsList::addJob(Command *cmd,pid_t p,bool isStopped) {
+void JobsList::addJob(Command *cmd,pid_t p) {
     update();
     /*if(jobs.size() >= 100) //TODO: define & throw
         ;//*/
-    jobs.push_back(new JobEntry(cmd, isStopped, ++maxId,p));
+    jobs.push_back(new JobEntry(cmd,++maxId,p));
 }
 
 void JobsList::printJobsList() {
@@ -25,7 +25,7 @@ void JobsList::printJobsList() {
     for (auto i : jobs){
         cout << "[" << i->getJobId() << "] " << i->getCmd()->print();
         cout << " : " << i->getJobPid() << " ";
-        if(i->isStopped()){
+        if(i->getStatus() != RUN){
             cout <<  std::difftime(i->getStopTime(), i-> getStartTime()) << " secs (stopped)";
         }else{
             time_t temp;
@@ -78,11 +78,10 @@ bool JobsList::contains(int jobId) {
 void JobsList::removeFinishedJobs() {
     vector<JobEntry*> temp;
     for(auto i : jobs){
-        int status;
-        waitpid(i->getJobPid(), &status, WNOHANG);
-        if(kill(i->getJobPid(),0) == 0) {
+        i->updateStatus();
+        if(i->getStatus() != END) {
             temp.push_back(i);
-        }else {
+        }else{
             delete i;
         }
     }
@@ -113,7 +112,7 @@ JobsList::JobEntry *JobsList::getLastStoppedJob(int *jobId) {
     auto i = jobs.end();
     i--;
     do{
-        if((*i)->isStopped()){
+        if((*i)->getStatus() != RUN){
             if(jobId)
                 *jobId = (*i)->getJobId();
             return (*i);
@@ -185,7 +184,7 @@ void JobsList::resumeOnBG(int jobId) {
         getLastStoppedJob()->continueCmd();
     }else{
         JobEntry* job = getJobById(jobId);
-        if (!job->isStopped())
+        if (job->getStatus() != RUN)
             throw inBG();
 
         job->continueCmd();
@@ -193,13 +192,19 @@ void JobsList::resumeOnBG(int jobId) {
 }
 
 void JobsList::runFG() {
-    if (fg != NULL && !fg->isStopped()){
+    if (fg != NULL){
+        fg->updateStatus();
         int status;
-        waitpid(fg->getJobPid(),&status, WUNTRACED);
-
-        if(status == 0 || status == 9){
-            delete fg; //TODO: not to delete - just remove from list
+        if(fg->getStatus() == RUN){
+            waitpid(fg->getJobPid(),&status, WUNTRACED);
         }
+
+        if(WIFSTOPPED(status)){
+            fg->setStatus(STOP);
+        }else{
+            fg->setStatus(END);
+        }
+
         fg = NULL;
     }
 }

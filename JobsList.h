@@ -13,30 +13,52 @@ using std::cout;
 using std::endl;
 
 
+
 class JobsList {
+    typedef enum{
+        RUN, STOP, END
+    }cmdStatus;
 public:
     class JobEntry {
         Command* cmd;
-        bool stopped;
+        cmdStatus status;
         time_t startTime;
         time_t stopTime;
         int jobId;
         pid_t pid;
     public:
-        JobEntry(Command* _cmd, bool _stopped, int _jobId, pid_t p) :
-            cmd(_cmd), stopped(_stopped), jobId(_jobId),pid(p){
+        JobEntry(Command* _cmd, int _jobId, pid_t p) :
+            cmd(_cmd), status(RUN), jobId(_jobId),pid(p){
             startTime = time(nullptr);
         }
         ~JobEntry() {
             delete cmd;
         };
 
-        Command *getCmd() const {
-            return cmd;
+        void updateStatus(){
+            int newStatus = 0;
+            waitpid(pid, &newStatus, WNOHANG | WUNTRACED | WCONTINUED);
+
+            cout << "Checking status of " << pid << endl;
+            cout << "newStatus: " << newStatus << endl;
+
+
+
+            if(WIFSTOPPED(newStatus)){
+                //TODO: debug
+                cout << "update status stop" << endl;
+                status = STOP;
+            }else if(WIFEXITED(newStatus) || WTERMSIG(newStatus)){
+                cout << "update status end" << endl;
+                status = END;
+            }else{
+                cout << "update status run" << endl;
+                status = RUN;
+            }
         }
 
-        bool isStopped() const {
-            return stopped;
+        Command *getCmd() const {
+            return cmd;
         }
 
         time_t getStartTime() const {
@@ -65,13 +87,22 @@ public:
 
         void stopCmd(){
             stopTime = time(nullptr);
-            stopped = true;
+            status = STOP;
             kill(pid, SIGSTOP);
         }
         void continueCmd(){
-            stopped = false;
+            status = RUN; //TODO: times
             kill(pid, SIGCONT); //TODO:Check
         }
+
+        cmdStatus getStatus() const {
+            return status;
+        }
+
+        void setStatus(cmdStatus status) {
+            JobEntry::status = status;
+        }
+
     };
     class notExist: public std::exception{
         int jobId;
@@ -100,7 +131,7 @@ private:
 public:
     JobsList() : counter(0), maxId(0), jobs(), fg(NULL) {};
     ~JobsList();
-    void addJob(Command* cmd,pid_t p,bool isStopped = false);
+    void addJob(Command* cmd,pid_t p);
     void printJobsList();
     void killAllJobs();
     int getSize();
