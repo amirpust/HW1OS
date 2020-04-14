@@ -185,7 +185,8 @@ void fgCommand::execute() {
             job->continueCmd();
             kill(job->getJobPid(),25);
         }
-        waitpid(job->getJobPid(), &status, WUNTRACED | WCONTINUED);
+        pid_t p = waitpid(job->getJobPid(), &status, WUNTRACED | WCONTINUED);
+        cout << p << endl;
         SmallShell::getInstance().getJobs().removeJobById(jobId);
     }catch(exception& e){
         //TODO : check what exception is being thrown empty or not exist
