@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include "CommandExceptions.h"
 #include <string.h>
+#include <fcntl.h>
 
 using std::vector;
 using std::string;
@@ -50,19 +51,31 @@ class ExternalCommand : public Command {
   ExternalCommand(const char* cmd_line): Command(cmd_line, external){};
   virtual ~ExternalCommand() = default;
   void execute() override{
-        //TODO : free the allocated memory
+        ///I know its ugly but this way we dont allocate dynamic memory...
+        char bash[5] = "bash";
+        char flag[3] = "-c";
+        char cmd[COMMAND_ARGS_MAX_LENGTH];
+        strcpy(cmd,cmd_line);
         char* cmd_args[4];
-        string bash = "bash";
-        string flag = "-c";
-        cmd_args[0] = new char[bash.size() + 1];
-        cmd_args[1] = new char[flag.size() + 1];
-        cmd_args[2] = new char[strlen(cmd_line) + 1];
-        strcpy(cmd_args[0], flag.c_str());
-        strcpy(cmd_args[1], flag.c_str());
-        strcpy(cmd_args[2], cmd_line);
+        cmd_args[0] = bash;
+        cmd_args[1] = flag;
+        cmd_args[2] = cmd;
         cmd_args[3] = NULL;
+//TODO : free the allocated memory
 
-        execv("/bin/bash",cmd_args);
+        //string bash = "bash";
+        //string flag = "-c";
+        //cmd_args[0] = new char[bash.size() + 1];
+
+        //cmd_args[1] = new char[flag.size() + 1];
+        //cmd_args[2] = new char[strlen(cmd_line) + 1];
+        //strcpy(cmd_args[0], flag.c_str());
+        //strcpy(cmd_args[1], flag.c_str());
+        //strcpy(cmd_args[2], cmd_line);
+
+
+        execvp("/bin/bash",cmd_args);
+
   }
 };
 
@@ -77,13 +90,32 @@ class PipeCommand : public Command {
 
 
 class RedirectionCommand : public Command {
- // TODO: Add your data members
- public:
-  explicit RedirectionCommand(const char* cmd_line)
-  : Command(cmd_line, redirection){};
-  virtual ~RedirectionCommand() {}
-  void execute() override;
-  //void prepare() override;
+    int fd;
+    int fdDup;
+public:
+    explicit RedirectionCommand(const char* cmd_line)
+    : Command(cmd_line, redirection){
+        // check what to do if number if args is less than needed
+
+    };
+    virtual ~RedirectionCommand() {}
+
+    void execute() override{
+        //use create
+    }
+
+    //prepare will open the wanted file
+    void prepare(){
+        if(strcmp(args[1],">")){
+            //overwrite a file
+            fd = open(args[2],O_CREAT, "w");
+            close(1);//closes stdout
+            fdDup = dup(fd);
+        }else{
+            //append to file ">>"
+
+        }
+    };
   //void cleanup() override;
 };
 

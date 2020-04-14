@@ -106,10 +106,6 @@ const cmdType Command::getType() const {
     return type;
 }
 
-bool Command::isFinished() {
-
-}
-
 const char *Command::getCmdLine() const {
     return cmd_line;
 }
@@ -235,3 +231,10 @@ void quitCommand::execute() {
 }
 
 quitCommand::quitCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
+
+void RedirectionCommand::prepare() {
+}
+
+void RedirectionCommand::execute() {
+   
+}
