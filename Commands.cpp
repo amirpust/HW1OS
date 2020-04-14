@@ -98,10 +98,6 @@ const char *Command::print() const {
     return args[0];
 }
 
-pid_t Command::getCommandPid() const {
-    return getpid();
-}
-
 const cmdType Command::getType() const {
     return type;
 }
