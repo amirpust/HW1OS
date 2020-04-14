@@ -203,8 +203,3 @@ void JobsList::runFG() {
         fg = NULL;
     }
 }
-
-
-
-
-

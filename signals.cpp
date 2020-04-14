@@ -34,13 +34,13 @@ void ctrlCHandler(int sig_num) {
     SmallShell::getInstance().getJobs().killCommand(
             SmallShell::getInstance().getJobs().getLastJob(),false);*/
     cout<< "smash: got ctrl-C"<<endl;
-    cout<< "smash: process " + std::to_string(pid) + " was killed"<<endl;
+    cout<< "smash: process " + std::to_string(getpid()) + " was killed"<<endl;
 
 }
 
 void alarmHandler(int sig_num) {
-    cout << "smash got an alarm" <<  endl;
-    const char* cmd = SmallShell::getInstance();//TODO: get last command in the shell
-    cout << "smash: " + cmd + "timed out!"<< endl;
+//    cout << "smash got an alarm" <<  endl;
+//    const char* cmd = SmallShell::getInstance();//TODO: get last command in the shell
+//    cout << "smash: " + cmd + "timed out!"<< endl;
 }
 
