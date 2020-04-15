@@ -1,6 +1,7 @@
-#pragma once
+#ifndef defines_H
+#define defines_H
 
-int debugScope = 0;
+static int debugScope = 0;
 
 #define PRINT_START do{                             \
         for(int debugScopeIndex = 0; debugScopeIndex < debugScope; debugScopeIndex++) \
@@ -33,3 +34,7 @@ int debugScope = 0;
         cout <<"END :"<< __FUNCTION__ << " With " << #param << ": " << param << endl; \
         debugScope--;                                \
         }while(0)
+
+
+#define GRADE  100
+#endif

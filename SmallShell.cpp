@@ -10,17 +10,39 @@
 void SmallShell::executeCommand(const char *cmd_line) {
     char* cmd_l = new char[strlen(cmd_line) + 1];
     strcpy(cmd_l,cmd_line);
+    redirectionType rdType = _isredirection(cmd_l);
+
     bool onBG = _isBackgroundComamnd(cmd_l);
     _removeBackgroundSign(cmd_l);
+
+    char redirection[COMMAND_ARGS_MAX_LENGTH];
+    if(rdType != noRedirection){
+        _getRedirection(cmd_l,redirection);
+        _removeRedirection(cmd_l);
+    }
+
+    if(!onBG){
+        onBG = _isBackgroundComamnd(cmd_l);
+        _removeBackgroundSign(cmd_l);
+    }
+
     Command* cmd = CreateCommand(cmd_l);
 
     if(cmd->getType() == builtIn){
+        int stdOut = -1;
+        if(rdType != noRedirection){
+            stdOut = dup(1);
+            prepare(redirection, rdType);
+        }
         cmd->execute();
-        cout << "Flag execute: " << cmd->print() << endl;
+        cleanUp(stdOut);
         return;
     }else if(cmd->getType() == external){
         pid_t pid = fork();
         if(pid == 0){                                //Child
+            if(rdType != noRedirection){
+                prepare(redirection, rdType);
+            }
             cmd->execute();
             exit(-1); //we'll probably use execv and wont reach here.
         }else{                                      //Parent

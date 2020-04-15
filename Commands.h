@@ -15,7 +15,7 @@ using std::string;
 #define COMMAND_MAX_ARGS (20)
 #define HISTORY_MAX_RECORDS (50)
 typedef enum {builtIn, external, pipeCmd, redirection} cmdType;
-typedef enum{override, append} redirectionType;
+typedef enum{override, append, noRedirection} redirectionType;
 class Command {
 protected:
     const char* cmd_line;
@@ -295,6 +295,10 @@ class CopyCommand : public BuiltInCommand {
 };
 void _removeBackgroundSign(char* cmd_line);
 bool _isBackgroundComamnd(const char* cmd_line);
-
+redirectionType _isredirection(const char* cmd_line);
+void _getRedirection(char* cmd_line,char* direction);
+void _removeRedirection(char* cmd_line);
+void prepare(char* path,redirectionType rd);
+void cleanUp(int fd);
 
 #endif //SMASH_COMMAND_H_

@@ -84,10 +84,61 @@ void _removeBackgroundSign(char* cmd_line) {
   cmd_line[str.find_last_not_of(WHITESPACE, idx) + 1] = 0;
 }
 
+redirectionType _isredirection(const char* cmd_line){
+    const string str(cmd_line);
+    if(str.find(">>") != string::npos)
+        return append;
+    if (str.find('>') != string::npos)//TODO check if works
+        return override;
+    return noRedirection;
+}
 
+void _removeRedirection(char* cmd_line){
+    const string str(cmd_line);
+    // find last character other than spaces
+    unsigned int idx = str.find_first_of('>');
+    // if all characters are spaces then return
+    if (idx == string::npos) {
+        return;
+    }
+    // replace the '>' (background sign) with space and then remove all tailing spaces.
+    cmd_line[idx] = '\0';
+    // truncate the command line string up to the last non-space character
+    //cmd_line[str.find_first_of(WHITESPACE, idx) + 1] = 0;
+}
 
-// TODO: Add your implementation for classes in Commands.h
+void _getRedirection(char* cmd_line,char* direction){
+    char* args[COMMAND_ARGS_MAX_LENGTH];
+    _parseCommandLine(cmd_line,args);
+    int i = 0;
+    while(args[i] != nullptr){
+        if(!strcmp(args[i],">") || !strcmp(args[i], ">>")){
+            //TODO : free allocated memory;
+            if(args[i + 1] == nullptr)
+                return;
+            strcpy(direction,args[i + 1]);
+        }
+        i++;
+    }
+}
 
+void prepare(char* path,redirectionType rd){
+    close(1);
+    if(rd == override){
+        open(path,O_CREAT,"w");
+    }else if (rd == append){
+        open(path, O_APPEND, "w"); //TODO : check if works
+    }
+}
+
+void cleanUp(int fd){
+    if (fd == -1){
+        return;
+    }
+    close(1);
+    dup(fd);
+    close(fd);
+}
 chpromptCommand::chpromptCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
 
 void chpromptCommand::execute() {
