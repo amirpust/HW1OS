@@ -35,7 +35,6 @@ void SmallShell::executeCommand(const char *cmd_line) {
             stdOut = dup(1);
             prepare(redirection, rdType);
         }
-
         cmd->execute();
         cleanUp(stdOut);
         return;
