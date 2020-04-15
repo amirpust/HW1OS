@@ -26,7 +26,7 @@ void SmallShell::executeCommand(const char *cmd_line) {
         _removeBackgroundSign(cmd_l);
     }
 
-    Command* cmd = CreateCommand(cmd_l);
+    Command* cmd = CreateCommand(cmd_line);
 
     if(cmd->getType() == builtIn){
         int stdOut = -1;
@@ -72,7 +72,7 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
             "chprompt", "showpid", "pwd", "cd", "jobs", "kill", "fg",
             "bg", "quit"
     };
-
+    //TODO: check for white space
     string str = string(cmd_line);
     if (str.find(commands[0]) == 0)
         return new chpromptCommand(cmd_line);

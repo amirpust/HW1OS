@@ -17,23 +17,23 @@ using std::string;
 typedef enum {builtIn, external, pipeCmd, redirection} cmdType;
 typedef enum{override, append, noRedirect} redirectionType;
 typedef  enum{pipeRegular,pipeStderr,noPipe}pipeType;
+
+
 class Command {
 protected:
     const char* cmd_line;
     char* args[COMMAND_MAX_ARGS];
     int size;
     const cmdType type;
+
 public:
     Command(const char* cmd_line, cmdType);
-    virtual ~Command() = default;
+    virtual ~Command() = default;//TODO: delete allocated memory
     virtual void execute() = 0;
     const char* print()const;
     //virtual void prepare();
     //virtual void cleanup();
-    // TODO: Add your extra methods if needed
-    bool isFinished();;
     const cmdType getType() const;
-
     const char *getCmdLine() const;
 
 };
