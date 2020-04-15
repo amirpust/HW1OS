@@ -83,14 +83,6 @@ public:
             return jobId;
         }
 
-        bool operator==(const JobEntry &rhs) const {
-            return jobId == rhs.jobId;
-        }
-
-        bool operator!=(const JobEntry &rhs) const {
-            return !(rhs == *this);
-        };
-
         pid_t getJobPid(){
             return pid;
         }
