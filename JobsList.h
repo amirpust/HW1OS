@@ -99,25 +99,24 @@ public:
             if(status != RUN)
                 return;
 
-            updateStatus();
             kill(pid, SIGSTOP);
+            updateStatus();
         }
         void continueCmd(){
             assert(status == STOP); //TODO: debug
             if(status != STOP)
                 return;
 
-            startTime = time(nullptr);
-            updateStatus();
             kill(pid, SIGCONT); //TODO:Check
+            updateStatus();
         }
         void killCmd(){
             assert(status != END); //TODO: debug
             if(status == END)
                 return;
 
-            updateStatus();
             kill(pid, SIGKILL);
+            updateStatus();
         }
 
         cmdStatus getStatus() const {

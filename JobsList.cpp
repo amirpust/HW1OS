@@ -165,6 +165,9 @@ void JobsList::sendSigById(int sig, int jobId) {
 }
 
 void JobsList::bringFG(int jobId) {
+    assert((fg == NULL));
+    //TODO: debug
+
     fg = getJobById(jobId);
     //cout << "flag bringFG: " + fg->getJobPid() <<endl;
     if(fg->getStatus() == STOP)
@@ -186,6 +189,17 @@ void JobsList::resumeOnBG(int jobId) {
 }
 
 void JobsList::runFG() {
+    if(!fg)
+        return;
+
+    do{
+        fg->updateStatus();
+    }while(fg->getStatus() == RUN);
+
+    fg = NULL;
+
+
+    /*
     if (fg != NULL){
         fg->updateStatus();
         int status;
@@ -201,7 +215,7 @@ void JobsList::runFG() {
         }
 
         fg = NULL;
-    }
+    }*/
 }
 
 pid_t JobsList::fgPid() {
