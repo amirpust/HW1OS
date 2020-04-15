@@ -41,7 +41,7 @@ void SmallShell::executeCommand(const char *cmd_line) {
     }else if(cmd->getType() == external){
         pid_t pid = fork();
         if(pid == 0){
-            setpgrp();//Child
+            PRINT_PARAM(setpgrp());//Child
             if(rdType != noRedirection){
                 prepare(redirection, rdType);
             }
@@ -49,21 +49,7 @@ void SmallShell::executeCommand(const char *cmd_line) {
             exit(-1); //we'll probably use execv and wont reach here.
         }else{                                      //Parent
             jobs.addJob(cmd,pid, onBG);
-            /*
-            if(!onBG){
-                int status;
-                waitpid(pid, &status, WUNTRACED | WCONTINUED);
-                if(status == -1)            //TODO : handle exception
-                    exit(-1);
-                return;
-            }else{
-                return;
-            }*/
-        }
-    }
 
-    cout << "Flag end of execute" << endl;
-    //TODO: add more types
 }
 
 const std::string SmallShell::getName() const {

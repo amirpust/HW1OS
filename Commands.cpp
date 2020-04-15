@@ -56,7 +56,7 @@ int _parseCommandLine(const char* cmd_line, char** args) {
     strcpy(args[i], s.c_str());
     args[++i] = NULL;
   }
-  return i;
+  return i - 1;
 
   FUNC_EXIT()
 }
@@ -84,13 +84,13 @@ void _removeBackgroundSign(char* cmd_line) {
   cmd_line[str.find_last_not_of(WHITESPACE, idx) + 1] = 0;
 }
 
-redirectionType _isredirection(const char* cmd_line){
-    const string str(cmd_line);
-    if(str.find(">>") != string::npos)
-        return append;
-    if (str.find('>') != string::npos)//TODO check if works
-        return override;
-    return noRedirection;
+void redirectionAUX(char* cmd_line, bool* bg,char* cmd_args){
+    _getRedirection(cmd_line,cmd_args);//cmd_args might be null we should handel it
+    _removeRedirection(cmd_line);
+    if(!*bg){
+        *bg = _isBackgroundComamnd(cmd_line);
+        _removeBackgroundSign(cmd_line);
+    }
 }
 
 void _removeRedirection(char* cmd_line){
@@ -103,8 +103,6 @@ void _removeRedirection(char* cmd_line){
     }
     // replace the '>' (background sign) with space and then remove all tailing spaces.
     cmd_line[idx] = '\0';
-    // truncate the command line string up to the last non-space character
-    //cmd_line[str.find_first_of(WHITESPACE, idx) + 1] = 0;
 }
 
 void _getRedirection(char* cmd_line,char* direction){
@@ -121,6 +119,40 @@ void _getRedirection(char* cmd_line,char* direction){
         i++;
     }
 }
+
+redirectionType identifyRedirection(char* cmd_line, bool *bg, char* cmd_args){
+    *bg = _isBackgroundComamnd(cmd_line);
+    _removeBackgroundSign(cmd_line);
+    const string str(cmd_line);
+    if(str.find(">>") != string::npos){
+        redirectionAUX(cmd_line,bg,cmd_args);
+        return append;
+    }else if(str.find('>') != string::npos){
+        redirectionAUX(cmd_line,bg,cmd_args);
+        return override;
+    }
+    return noRedirect;
+}
+
+
+pipeType identifyPipe(char* cmd_line,char* left, char* right){
+    const string str(cmd_line);
+    int indexOr = str.find_first_of('|');
+    int indexAnd = str.find_first_of('&');
+    if (indexAnd != string::npos && indexOr != string::npos && indexOr == indexAnd - 1){
+        cmd_line[indexOr] = '\0';
+        strcpy(left,cmd_line);
+        strcpy(right,cmd_line + indexAnd + 1);//check how to make it better;
+        return pipeStderr;
+    }else if(indexOr != string::npos){
+        cmd_line[indexOr] = '\0';
+        strcpy(left,cmd_line);
+        strcpy(right,cmd_line + indexOr + 1);//check how to make it better;
+        return pipeRegular;
+    }
+    return noPipe;
+}
+
 
 void prepare(char* path,redirectionType rd){
     close(1);
@@ -268,7 +300,8 @@ bgCommand::bgCommand(const char *cmd_line) : BuiltInCommand(cmd_line){
 }
 
 void quitCommand::execute() {
-    if(size > 1){
+    PRINT_PARAM(args[1]);
+    if(size > 1 && !strcmp(args[1], "kill")){
         cout << "smash: sending SIGKILL signal to " +
         std::to_string(SmallShell::getInstance().getJobs().getSize()) + " jobs:" << endl;
         SmallShell::getInstance().getJobs().killAllJobs();

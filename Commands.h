@@ -15,7 +15,8 @@ using std::string;
 #define COMMAND_MAX_ARGS (20)
 #define HISTORY_MAX_RECORDS (50)
 typedef enum {builtIn, external, pipeCmd, redirection} cmdType;
-typedef enum{override, append, noRedirection} redirectionType;
+typedef enum{override, append, noRedirect} redirectionType;
+typedef  enum{pipeRegular,pipeStderr,noPipe}pipeType;
 class Command {
 protected:
     const char* cmd_line;
@@ -300,5 +301,7 @@ void _getRedirection(char* cmd_line,char* direction);
 void _removeRedirection(char* cmd_line);
 void prepare(char* path,redirectionType rd);
 void cleanUp(int fd);
+redirectionType identifyRedirection(char* cmd_line, bool *bg, char* cmd_args);
+pipeType identifyPipe(char* cmd_line,char* left, char* right);
 
 #endif //SMASH_COMMAND_H_
