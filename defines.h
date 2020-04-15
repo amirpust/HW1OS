@@ -35,6 +35,11 @@ static int debugScope = 0;
         cout <<"END :"<< __FUNCTION__ << " With " << #param << ": " << param << endl; \
         }while(0)
 
+#define PRINT_PARAM(param) do{    \
+        for(int debugScopeIndex = 0; debugScopeIndex < debugScope; debugScopeIndex++) \
+            cout << "\t" ;              \
+        cout << #param << ": " << param << endl; \
+        }while(0)
 
-#define GRADE  100
+
 #endif
