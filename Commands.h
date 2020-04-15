@@ -15,7 +15,7 @@ using std::string;
 #define COMMAND_MAX_ARGS (20)
 #define HISTORY_MAX_RECORDS (50)
 typedef enum {builtIn, external, pipeCmd, redirection} cmdType;
-
+typedef enum{override, append} redirectionType;
 class Command {
 protected:
     const char* cmd_line;

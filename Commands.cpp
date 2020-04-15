@@ -27,6 +27,8 @@ const std::string WHITESPACE = " \n\r\t\f\v";
 #define EXEC(path, arg) \
   execvp((path), (arg));
 
+
+
 string _ltrim(const std::string& s)
 {
   size_t start = s.find_first_not_of(WHITESPACE);
@@ -81,6 +83,8 @@ void _removeBackgroundSign(char* cmd_line) {
   // truncate the command line string up to the last non-space character
   cmd_line[str.find_last_not_of(WHITESPACE, idx) + 1] = 0;
 }
+
+
 
 // TODO: Add your implementation for classes in Commands.h
 
