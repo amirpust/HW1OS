@@ -43,22 +43,23 @@ public:
             int newStatus = 0;
             pid_t p = waitpid(pid, &newStatus, WNOHANG | WUNTRACED | WCONTINUED);
 
-            cout << "Checking  " << p << endl;
+            /*cout << "Checking  " << p << endl;
             cout << "Checking status of " << pid << endl;
-            cout << "newStatus: " << newStatus << endl;
+            cout << "newStatus: " << newStatus << endl;*/
+
             if( p != 0){
                 if(WIFSTOPPED(newStatus)){
                     //TODO: debug
                     cout << "update status stop" << endl;
                     stopTime = time(nullptr);
                     status = STOP;
-                }else if(WIFEXITED(newStatus) || WTERMSIG(newStatus)){
-                    cout << "update status end" << endl;
-                    status = END;
                 }else if(WIFCONTINUED(newStatus)){
                     cout << "update status continued" << endl;
                     startTime = time(nullptr);
                     status = RUN;
+                }else if(WIFEXITED(newStatus) || WTERMSIG(newStatus)){
+                    cout << "update status end" << endl;
+                    status = END;
                 }else{
                     cout << "Error: else | Function: " << __FUNCTION__ << " | Line: " << __LINE__  << endl;
                     status = RUN;

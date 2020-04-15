@@ -16,6 +16,8 @@ void SmallShell::executeCommand(const char *cmd_line) {
 
     if(cmd->getType() == builtIn){
         cmd->execute();
+        cout << "Flag execute: " << cmd->print() << endl;
+        return;
     }else if(cmd->getType() == external){
         pid_t pid = fork();
         if(pid == 0){                                //Child
@@ -34,6 +36,8 @@ void SmallShell::executeCommand(const char *cmd_line) {
             }
         }
     }
+
+    cout << "Flag end of execute" << endl;
     //TODO: add more types
 }
 

@@ -55,10 +55,14 @@ void JobsList::update() {
     runFG();
     removeFinishedJobs();
 
+    cout << "flag update. jobs size : "<< jobs.size() << endl;
+
     if(jobs.empty())
         maxId = 0;
     else
         maxId = jobs.back()->getJobId();
+
+    cout << "end of update. PID" << getpid() << endl;
 }
 
 bool JobsList::contains(int jobId) {
@@ -71,6 +75,9 @@ bool JobsList::contains(int jobId) {
 void JobsList::removeFinishedJobs() {
     vector<JobEntry*> temp;
     for(auto i : jobs){
+        assert (i != NULL);
+        //cout << "Flag removeFinishedJobs | jobId: " << i->getJobId() << endl;
+
         i->updateStatus();
         if(i->getStatus() != END) {
             temp.push_back(i);
@@ -82,6 +89,8 @@ void JobsList::removeFinishedJobs() {
 
     for(auto i:temp)
         jobs.push_back(i);
+
+    cout <<"Flag end of removeFinishedjobs" << endl;
 }
 
 int JobsList::getSize() {
@@ -136,6 +145,8 @@ void JobsList::killAllJobs() {
 }
 
 void JobsList::sendSigById(int sig, int jobId) {
+    update();
+
     JobEntry* job;
     if( job == 0){
         if(!fg){
@@ -161,7 +172,6 @@ void JobsList::sendSigById(int sig, int jobId) {
         kill(getJobById(jobId)->getJobPid(),sig);
     }
 
-    update();
 }
 
 void JobsList::bringFG(int jobId) {
@@ -169,19 +179,23 @@ void JobsList::bringFG(int jobId) {
     //TODO: debug
 
     fg = getJobById(jobId);
-    //cout << "flag bringFG: " + fg->getJobPid() <<endl;
+    cout << "flag bringFG: " + fg->getJobPid() <<endl;
+
     if(fg->getStatus() == STOP)
         fg->continueCmd();
 
+    cout << "start update from bringFG" << endl;
     update();
+    cout << "Flag : end of bringFG " << endl;
 }
 
 void JobsList::resumeOnBG(int jobId) {
+    update();
     if(jobId == 0){
         getLastStoppedJob()->continueCmd();
     }else{
         JobEntry* job = getJobById(jobId);
-        if (job->getStatus() != RUN)
+        if (job->getStatus() == RUN)
             throw inBG();
 
         job->continueCmd();
