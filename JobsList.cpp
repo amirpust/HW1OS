@@ -47,15 +47,8 @@ JobsList::JobEntry *JobsList::getJobById(int jobId) {
 }
 
 void JobsList::removeJobById(int jobId) {
-    for(auto i = jobs.begin(); i != jobs.end(); i++){
-        if((*i)->getJobId() == jobId){
-            JobEntry* temp = *i;
-            jobs.erase(i);
-            delete temp;
-            return;
-        }
-    }
-    throw notExist(jobId);
+    getJobById(jobId)->killCmd();
+    update();
 }
 
 void JobsList::update() {
@@ -157,16 +150,14 @@ void JobsList::sendSigById(int sig, int jobId) {
 
     if(sig == SIGKILL){
         removeJobById(jobId);
-    }else if (sig == SIGTSTP){
+    }else if (sig == SIGSTOP){
         job->stopCmd();
-        if(jobId == fg->getJobId()){
+        if(fg && jobId == fg->getJobId()){
             fg = NULL;
-            //TODO: dill with times
         }
     }else if(sig == SIGCONT){
         job->continueCmd();
     }else{
-        //TODO: try to figure the state of the process
         kill(getJobById(jobId)->getJobPid(),sig);
     }
 
@@ -175,8 +166,10 @@ void JobsList::sendSigById(int sig, int jobId) {
 
 void JobsList::bringFG(int jobId) {
     fg = getJobById(jobId);
-    cout << "flag bringFG: " + fg->getJobPid() <<endl;
-    fg->continueCmd();
+    //cout << "flag bringFG: " + fg->getJobPid() <<endl;
+    if(fg->getStatus() == STOP)
+        fg->continueCmd();
+
     update();
 }
 
@@ -199,13 +192,20 @@ void JobsList::runFG() {
         if(fg->getStatus() == RUN){
             waitpid(fg->getJobPid(),&status, WUNTRACED);
         }
+        //TODO: will cause an error in killCmd() [it will try to wait on death child]
 
         if(WIFSTOPPED(status)){
-            fg->setStatus(STOP);
+            fg->stopCmd();
         }else{
-            fg->setStatus(END);
+            fg->killCmd();
         }
 
         fg = NULL;
     }
+}
+
+pid_t JobsList::fgPid() {
+    if (fg)
+        return fg->getJobPid();
+    return 0;
 }
