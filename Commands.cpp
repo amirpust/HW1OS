@@ -125,9 +125,9 @@ void _getRedirection(char* cmd_line,char* direction){
 void prepare(char* path,redirectionType rd){
     close(1);
     if(rd == override){
-        open(path,O_CREAT,"w");
+        open(path,O_CREAT | O_RDWR);
     }else if (rd == append){
-        open(path, O_APPEND, "w"); //TODO : check if works
+        open(path, O_APPEND | O_CREAT, "w"); //TODO : check if works
     }
 }
 
