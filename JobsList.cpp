@@ -11,17 +11,19 @@ JobsList::~JobsList() {
 }
 
 void JobsList::addJob(Command *cmd,pid_t p, bool onBG) {
+    PRINT_START;
+
     update();
     /*if(jobs.size() >= 100) //TODO: define & throw
         ;//*/
     jobs.push_back(new JobEntry(cmd,++maxId,p));
 
-    cout << "add job before FG" << endl;
 
     if (!onBG)
         bringFG(maxId);
 
     cout << "end of addJobs" << endl;
+    PRINT_END;
 }
 
 void JobsList::printJobsList() {
@@ -29,8 +31,6 @@ void JobsList::printJobsList() {
 
     if (jobs.empty())
         return;
-
-    //cout << "Job List: " << endl;
 
     for (auto i : jobs){
         cout << "[" << i->getJobId() << "] " << i->getCmd()->print();
@@ -60,17 +60,16 @@ void JobsList::removeJobById(int jobId) {
 }
 
 void JobsList::update() {
+    PRINT_START;
+
     runFG();
     removeFinishedJobs();
-
-    cout << "flag update. jobs size : "<< jobs.size() << endl;
 
     if(jobs.empty())
         maxId = 0;
     else
         maxId = jobs.back()->getJobId();
-
-    cout << "end of update. PID" << getpid() << endl;
+    PRINT_END;
 }
 
 bool JobsList::contains(int jobId) {
@@ -81,6 +80,7 @@ bool JobsList::contains(int jobId) {
 }
 
 void JobsList::removeFinishedJobs() {
+    PRINT_START;
     vector<JobEntry*> temp;
     for(auto i : jobs){
         assert (i != NULL);
@@ -98,7 +98,7 @@ void JobsList::removeFinishedJobs() {
     for(auto i:temp)
         jobs.push_back(i);
 
-    cout <<"Flag end of removeFinishedjobs" << endl;
+    PRINT_END;
 }
 
 int JobsList::getSize() {
@@ -126,7 +126,6 @@ JobsList::JobEntry *JobsList::getLastStoppedJob(int *jobId) {
     }
 
     if(!lastStopped){
-        cout << "last stopped" << endl;
         throw notExist();
     }
 
@@ -147,13 +146,14 @@ void JobsList::killCommand(JobsList::JobEntry *job, bool toPrint) {
 }
 
 void JobsList::killAllJobs() {
-    for(auto i : jobs){
+    for(auto i : jobs) {
         killCommand(i);
     }
-
+    update();
 }
 
 void JobsList::sendSigById(int sig, int jobId) {
+    PRINT_START_PARAM(jobId);
    // update();
 
     JobEntry* job;
@@ -181,21 +181,21 @@ void JobsList::sendSigById(int sig, int jobId) {
     }else{
         kill(job->getJobPid(),sig);
     }
+    PRINT_END_PARAM(jobId);
 }
 
 void JobsList::bringFG(int jobId) {
+    PRINT_START;
     assert((fg == NULL));
     //TODO: debug
 
     fg = getJobById(jobId);
-    cout << "flag bringFG: " << fg->getJobPid() <<endl;
 
     if(fg->getStatus() == STOP)
         fg->continueCmd();
 
-    cout << "start update from bringFG" << endl;
     update();
-    cout << "Flag : end of bringFG " << endl;
+    PRINT_END;
 }
 
 void JobsList::resumeOnBG(int jobId) {
@@ -212,35 +212,17 @@ void JobsList::resumeOnBG(int jobId) {
 }
 
 void JobsList::runFG() {
-
-    cout << "start runFG" << endl;
-    if(!fg)
+    PRINT_START;
+    if (!fg)
         return;
 
-    do{
+    do {
         fg->updateStatus();
-    }while(fg->getStatus() == RUN);
+    } while (fg->getStatus() == RUN);
 
     fg = NULL;
 
-    cout << "end runFG" << endl;
-    /*
-    if (fg != NULL){
-        fg->updateStatus();
-        int status;
-        if(fg->getStatus() == RUN){
-            waitpid(fg->getJobPid(),&status, WUNTRACED);
-        }
-        //TODO: will cause an error in killCmd() [it will try to wait on death child]
-
-        if(WIFSTOPPED(status)){
-            fg->stopCmd();
-        }else{
-            fg->killCmd();
-        }
-
-        fg = NULL;
-    }*/
+    PRINT_END;
 }
 
 pid_t JobsList::fgPid() {

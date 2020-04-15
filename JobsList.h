@@ -6,6 +6,7 @@
 #define HW1_JOBSLIST_H
 
 #include "Commands.h"
+#include "defines.h"
 #include <exception>
 #include <ctime>
 #include <cassert>
