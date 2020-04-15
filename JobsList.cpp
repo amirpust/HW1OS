@@ -52,7 +52,6 @@ JobsList::JobEntry *JobsList::getJobById(int jobId) {
     for (auto i : jobs)
         if(i->getJobId() == jobId)
             return i;
-
     throw notExist(jobId);
 }
 
@@ -126,8 +125,10 @@ JobsList::JobEntry *JobsList::getLastStoppedJob(int *jobId) {
             lastStopped = i;
     }
 
-    if(!lastStopped)
+    if(!lastStopped){
+        cout << "last stopped" << endl;
         throw notExist();
+    }
 
     return lastStopped;
 }
@@ -153,11 +154,12 @@ void JobsList::killAllJobs() {
 }
 
 void JobsList::sendSigById(int sig, int jobId) {
-    update();
+   // update();
 
     JobEntry* job;
-    if( job == 0){
+    if( jobId == 0){
         if(!fg){
+
             return;
             //TODO: How to handle
         }
@@ -171,13 +173,13 @@ void JobsList::sendSigById(int sig, int jobId) {
         removeJobById(jobId);
     }else if (sig == SIGSTOP){
         job->stopCmd();
-        if(fg != NULL && job->getJobId() == fg->getJobId()){
-            fg = NULL;
-        }
+        //if(fg != NULL && job->getJobId() == fg->getJobId()){
+         //   fg = NULL;
+        //}
     }else if(sig == SIGCONT){
         job->continueCmd();
     }else{
-        kill(getJobById(jobId)->getJobPid(),sig);
+        kill(job->getJobPid(),sig);
     }
 }
 
@@ -186,7 +188,7 @@ void JobsList::bringFG(int jobId) {
     //TODO: debug
 
     fg = getJobById(jobId);
-    cout << "flag bringFG: " + fg->getJobPid() <<endl;
+    cout << "flag bringFG: " << fg->getJobPid() <<endl;
 
     if(fg->getStatus() == STOP)
         fg->continueCmd();
@@ -210,6 +212,8 @@ void JobsList::resumeOnBG(int jobId) {
 }
 
 void JobsList::runFG() {
+
+    cout << "start runFG" << endl;
     if(!fg)
         return;
 
@@ -219,7 +223,7 @@ void JobsList::runFG() {
 
     fg = NULL;
 
-
+    cout << "end runFG" << endl;
     /*
     if (fg != NULL){
         fg->updateStatus();
@@ -240,7 +244,7 @@ void JobsList::runFG() {
 }
 
 pid_t JobsList::fgPid() {
-    if (fg)
+    if(fg)
         return fg->getJobPid();
     return 0;
 }

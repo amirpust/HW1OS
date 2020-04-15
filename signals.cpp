@@ -10,6 +10,7 @@ void ctrlZHandler(int sig_num) {
     cout << "smash: got ctrl-Z" << endl;
     //kill(SmallShell::getInstance().getJobs().fgPid(), SIGSTOP);
     SmallShell::getInstance().getJobs().sendSigById(SIGSTOP);
+    cout <<  SmallShell::getInstance().getJobs().fgPid() << endl;
     cout << ">>>>>>>>>End CTRL+Z <<<<<<<<<<<<<" <<endl;
 }
 
