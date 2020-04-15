@@ -24,7 +24,8 @@ void SmallShell::executeCommand(const char *cmd_line) {
             cmd->execute();
             exit(-1); //we'll probably use execv and wont reach here.
         }else{                                      //Parent
-            jobs.addJob(cmd,pid);
+            jobs.addJob(cmd,pid, onBG);
+            /*
             if(!onBG){
                 int status;
                 waitpid(pid, &status, WUNTRACED | WCONTINUED);
@@ -33,7 +34,7 @@ void SmallShell::executeCommand(const char *cmd_line) {
                 return;
             }else{
                 return;
-            }
+            }*/
         }
     }
 

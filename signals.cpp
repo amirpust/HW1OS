@@ -6,9 +6,11 @@
 using namespace std;
 
 void ctrlZHandler(int sig_num) {
+    cout << ">>>>>>>>>Start CTRL+Z <<<<<<<<<<<<<" <<endl;
     cout << "smash: got ctrl-Z" << endl;
     //kill(SmallShell::getInstance().getJobs().fgPid(), SIGSTOP);
-    SmallShell::getInstance().getJobs().sendSigById(sig_num);
+    SmallShell::getInstance().getJobs().sendSigById(SIGSTOP);
+    cout << ">>>>>>>>>End CTRL+Z <<<<<<<<<<<<<" <<endl;
 }
 
 void ctrlCHandler(int sig_num) {

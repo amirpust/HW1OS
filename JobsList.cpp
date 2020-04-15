@@ -10,17 +10,27 @@ JobsList::~JobsList() {
         delete i;
 }
 
-void JobsList::addJob(Command *cmd,pid_t p) {
+void JobsList::addJob(Command *cmd,pid_t p, bool onBG) {
     update();
     /*if(jobs.size() >= 100) //TODO: define & throw
         ;//*/
     jobs.push_back(new JobEntry(cmd,++maxId,p));
+
+    cout << "add job before FG" << endl;
+
+    if (!onBG)
+        bringFG(maxId);
+
+    cout << "end of addJobs" << endl;
 }
 
 void JobsList::printJobsList() {
     update();
 
-    cout << "Job List: " << endl;
+    if (jobs.empty())
+        return;
+
+    //cout << "Job List: " << endl;
 
     for (auto i : jobs){
         cout << "[" << i->getJobId() << "] " << i->getCmd()->print();
@@ -48,7 +58,6 @@ JobsList::JobEntry *JobsList::getJobById(int jobId) {
 
 void JobsList::removeJobById(int jobId) {
     getJobById(jobId)->killCmd();
-    update();
 }
 
 void JobsList::update() {
@@ -111,17 +120,16 @@ JobsList::JobEntry *JobsList::getLastStoppedJob(int *jobId) {
     if(jobs.empty())
         throw emptyList();
 
-    auto i = jobs.end();
-    i--;
-    do{
-        if((*i)->getStatus() != RUN){
-            if(jobId)
-                *jobId = (*i)->getJobId();
-            return (*i);
-        }
-        i--;
-    }while(i != jobs.begin());
-    throw notExist();
+    JobEntry* lastStopped = NULL;
+    for(auto i : jobs){
+        if (i->getStatus() == STOP)
+            lastStopped = i;
+    }
+
+    if(!lastStopped)
+        throw notExist();
+
+    return lastStopped;
 }
 
 void JobsList::printKilledCommand(JobsList::JobEntry *job) {
@@ -163,7 +171,7 @@ void JobsList::sendSigById(int sig, int jobId) {
         removeJobById(jobId);
     }else if (sig == SIGSTOP){
         job->stopCmd();
-        if(fg && jobId == fg->getJobId()){
+        if(fg != NULL && job->getJobId() == fg->getJobId()){
             fg = NULL;
         }
     }else if(sig == SIGCONT){
@@ -171,7 +179,6 @@ void JobsList::sendSigById(int sig, int jobId) {
     }else{
         kill(getJobById(jobId)->getJobPid(),sig);
     }
-
 }
 
 void JobsList::bringFG(int jobId) {

@@ -147,7 +147,7 @@ private:
 public:
     JobsList() : counter(0), maxId(0), jobs(), fg(NULL) {};
     ~JobsList();
-    void addJob(Command* cmd,pid_t p);
+    void addJob(Command* cmd,pid_t p, bool onBg);
     void printJobsList();
     void killAllJobs();
     int getSize();
@@ -156,7 +156,7 @@ public:
     bool contains(int jobId);
     void sendSigById(int sig, int jobId = 0);
     void bringFG(int jobId);
-    void resumeOnBG(int jobId);
+    void resumeOnBG(int jobId = 0);
 
     JobEntry * getJobById(int jobId);
     JobEntry * getLastJob(int* lastJobId = NULL);
