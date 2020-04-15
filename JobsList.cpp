@@ -11,7 +11,7 @@ JobsList::~JobsList() {
 }
 
 void JobsList::addJob(Command *cmd,pid_t p, bool onBG) {
-    PRINT_START;
+    //PRINT_START;
 
     update();
     /*if(jobs.size() >= 100) //TODO: define & throw
@@ -22,8 +22,7 @@ void JobsList::addJob(Command *cmd,pid_t p, bool onBG) {
     if (!onBG)
         bringFG(maxId);
 
-    cout << "end of addJobs" << endl;
-    PRINT_END;
+    //PRINT_END;
 }
 
 void JobsList::printJobsList() {
@@ -60,7 +59,7 @@ void JobsList::removeJobById(int jobId) {
 }
 
 void JobsList::update() {
-    PRINT_START;
+    //PRINT_START;
 
     runFG();
     removeFinishedJobs();
@@ -69,7 +68,7 @@ void JobsList::update() {
         maxId = 0;
     else
         maxId = jobs.back()->getJobId();
-    PRINT_END;
+    //PRINT_END;
 }
 
 bool JobsList::contains(int jobId) {
@@ -80,7 +79,7 @@ bool JobsList::contains(int jobId) {
 }
 
 void JobsList::removeFinishedJobs() {
-    PRINT_START;
+    //PRINT_START;
     vector<JobEntry*> temp;
     for(auto i : jobs){
         assert (i != NULL);
@@ -98,7 +97,7 @@ void JobsList::removeFinishedJobs() {
     for(auto i:temp)
         jobs.push_back(i);
 
-    PRINT_END;
+    //PRINT_END;
 }
 
 int JobsList::getSize() {
@@ -185,7 +184,7 @@ void JobsList::sendSigById(int sig, int jobId) {
 }
 
 void JobsList::bringFG(int jobId) {
-    PRINT_START;
+    //PRINT_START;
     assert((fg == NULL));
     //TODO: debug
 
@@ -195,7 +194,7 @@ void JobsList::bringFG(int jobId) {
         fg->continueCmd();
 
     update();
-    PRINT_END;
+    //PRINT_END;
 }
 
 void JobsList::resumeOnBG(int jobId) {
@@ -212,7 +211,7 @@ void JobsList::resumeOnBG(int jobId) {
 }
 
 void JobsList::runFG() {
-    PRINT_START;
+    //PRINT_START;
     if (!fg)
         return;
 
@@ -222,7 +221,7 @@ void JobsList::runFG() {
 
     fg = NULL;
 
-    PRINT_END;
+    //PRINT_END;
 }
 
 pid_t JobsList::fgPid() {

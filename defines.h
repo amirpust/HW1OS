@@ -12,10 +12,10 @@ static int debugScope = 0;
 
 
 #define PRINT_END do{                             \
+        debugScope--;                               \
         for(int debugScopeIndex = 0; debugScopeIndex < debugScope; debugScopeIndex++) \
             cout << "\t" ;                          \
         cout <<"END :"<< __FUNCTION__ << endl;    \
-        debugScope--;                               \
         }while(0)
 
 
@@ -29,10 +29,10 @@ static int debugScope = 0;
 
 
 #define PRINT_END_PARAM(param) do{    \
+        debugScope--;                                \
         for(int debugScopeIndex = 0; debugScopeIndex < debugScope; debugScopeIndex++) \
             cout << "\t" ;              \
         cout <<"END :"<< __FUNCTION__ << " With " << #param << ": " << param << endl; \
-        debugScope--;                                \
         }while(0)
 
 
