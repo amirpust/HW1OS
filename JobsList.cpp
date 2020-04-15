@@ -175,6 +175,7 @@ void JobsList::sendSigById(int sig, int jobId) {
 
 void JobsList::bringFG(int jobId) {
     fg = getJobById(jobId);
+    cout << "flag bringFG: " + fg->getJobPid() <<endl;
     fg->continueCmd();
     update();
 }

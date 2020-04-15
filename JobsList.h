@@ -42,19 +42,19 @@ public:
             cout << "Checking  " << p << endl;
             cout << "Checking status of " << pid << endl;
             cout << "newStatus: " << newStatus << endl;
+            if( p != 0){
 
-
-
-            if(WIFSTOPPED(newStatus)){
-                //TODO: debug
-                cout << "update status stop" << endl;
-                status = STOP;
-            }else if(WIFEXITED(newStatus) || WTERMSIG(newStatus)){
-                cout << "update status end" << endl;
-                status = END;
-            }else{
-                cout << "update status run" << endl;
-                status = RUN;
+                if(WIFSTOPPED(newStatus)){
+                    //TODO: debug
+                    cout << "update status stop" << endl;
+                    status = STOP;
+                }else if(WIFEXITED(newStatus) || WTERMSIG(newStatus)){
+                    cout << "update status end" << endl;
+                    status = END;
+                }else{
+                    cout << "update status run" << endl;
+                    status = RUN;
+                }
             }
         }
 
@@ -136,7 +136,11 @@ public:
     void printJobsList();
     void killAllJobs();
     int getSize();
-
+    pid_t fgPid (){
+        if (fg)
+            return fg->getJobPid();
+        return 0;
+    }
     void removeJobById(int jobId);
 
     bool contains(int jobId);
