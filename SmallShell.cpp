@@ -40,7 +40,8 @@ void SmallShell::executeCommand(const char *cmd_line) {
         return;
     }else if(cmd->getType() == external){
         pid_t pid = fork();
-        if(pid == 0){                                //Child
+        if(pid == 0){
+            setpgrp();//Child
             if(rdType != noRedirection){
                 prepare(redirection, rdType);
             }
