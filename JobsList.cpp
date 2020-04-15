@@ -157,7 +157,7 @@ void JobsList::sendSigById(int sig, int jobId) {
 
     if(sig == SIGKILL){
         removeJobById(jobId);
-    }else if (sig == SIGSTOP){
+    }else if (sig == SIGTSTP){
         job->stopCmd();
         if(jobId == fg->getJobId()){
             fg = NULL;

@@ -37,8 +37,9 @@ public:
 
         void updateStatus(){
             int newStatus = 0;
-            waitpid(pid, &newStatus, WNOHANG | WUNTRACED | WCONTINUED);
+            pid_t p = waitpid(pid, &newStatus, WNOHANG | WUNTRACED | WCONTINUED);
 
+            cout << "Checking  " << p << endl;
             cout << "Checking status of " << pid << endl;
             cout << "newStatus: " << newStatus << endl;
 
@@ -88,7 +89,7 @@ public:
         void stopCmd(){
             stopTime = time(nullptr);
             status = STOP;
-            kill(pid, SIGSTOP);
+            kill(pid, SIGTSTP);
         }
         void continueCmd(){
             status = RUN; //TODO: times
