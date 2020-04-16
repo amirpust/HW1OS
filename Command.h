@@ -1,5 +1,5 @@
-#ifndef HW1_COMMAD_H
-#define HW1_COMMAD_H
+#ifndef HW1_COMMAND_H
+#define HW1_COMMAND_H
 
 #include <unistd.h>
 #include "CommandExceptions.h"
@@ -36,4 +36,4 @@ public:
 };
 
 
-#endif //HW1_COMMAD_H
+#endif //HW1_COMMAND_H
