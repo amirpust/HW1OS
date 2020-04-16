@@ -174,10 +174,10 @@ void chpromptCommand::execute() {
 }
 
 Command::Command(const char *cmd_line, cmdType _type) : cmd_line(cmd_line),type(_type) {
-    char cmd_l[COMMAND_ARGS_MAX_LENGTH];
-    strcpy(cmd_l,cmd_line);
-    _removeBackgroundSign(cmd_l);
-    size = _parseCommandLine(cmd_l, args);
+    //char cmd_l[COMMAND_ARGS_MAX_LENGTH];
+    //strcpy(cmd_l,cmd_line);
+    //_removeBackgroundSign(cmd_l);
+    size = _parseCommandLine(cmd_line, args);
 }
 
 const char *Command::print() const {

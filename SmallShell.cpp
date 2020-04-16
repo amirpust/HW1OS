@@ -23,8 +23,7 @@ void SmallShell::executeCommand(const char *cmd_line) {
         _removeRedirection(cmd_l);
     }*/
 
-
-    Command *cmd = CreateCommand(cmd_line);
+    Command *cmd = CreateCommand(cmd_l);
 
     PRINT_PARAM(cmd->getType());
     if (cmd->getType() == builtIn) {
