@@ -11,7 +11,7 @@ JobsList::~JobsList() {
 }
 
 void JobsList::addJob(Command *cmd,pid_t p, bool onBG) {
-    //PRINT_START;
+    PRINT_START;
 
     update();
     /*if(jobs.size() >= 100) //TODO: define & throw
@@ -22,10 +22,12 @@ void JobsList::addJob(Command *cmd,pid_t p, bool onBG) {
     if (!onBG)
         bringFG(maxId);
 
-    //PRINT_END;
+    PRINT_PARAM(jobs.size());
+    PRINT_END;
 }
 
 void JobsList::printJobsList() {
+    PRINT_START_PARAM(getSize());
     update();
 
     if (jobs.empty())
@@ -43,6 +45,7 @@ void JobsList::printJobsList() {
         }
         cout << endl;
     }
+    PRINT_END_PARAM(getSize());
 }
 
 JobsList::JobEntry *JobsList::getJobById(int jobId) {
@@ -59,7 +62,7 @@ void JobsList::removeJobById(int jobId) {
 }
 
 void JobsList::update() {
-    //PRINT_START;
+    PRINT_START;
 
     runFG();
     removeFinishedJobs();
@@ -68,7 +71,7 @@ void JobsList::update() {
         maxId = 0;
     else
         maxId = jobs.back()->getJobId();
-    //PRINT_END;
+    PRINT_END;
 }
 
 bool JobsList::contains(int jobId) {
@@ -79,12 +82,15 @@ bool JobsList::contains(int jobId) {
 }
 
 void JobsList::removeFinishedJobs() {
-    //PRINT_START;
+    PRINT_START;
+    if(jobs.empty())
+        return;
     vector<JobEntry*> temp;
+    PRINT_PARAM(jobs[0]->getCmd()->print());
     for(auto i : jobs){
         assert (i != NULL);
         //cout << "Flag removeFinishedJobs | jobId: " << i->getJobId() << endl;
-
+        PRINT_PARAM(i->getCmd()->print());
         i->updateStatus();
         if(i->getStatus() != END) {
             temp.push_back(i);
@@ -97,7 +103,7 @@ void JobsList::removeFinishedJobs() {
     for(auto i:temp)
         jobs.push_back(i);
 
-    //PRINT_END;
+    PRINT_END;
 }
 
 int JobsList::getSize() {

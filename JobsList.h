@@ -38,6 +38,9 @@ public:
         };
 
         void updateStatus(){
+            PRINT_START_PARAM(this->getCmd()->print());
+            PRINT_PARAM(getpid());
+
             if(status == END)
                 return;
 
@@ -66,6 +69,8 @@ public:
                     status = RUN;
                 }
             }
+
+            PRINT_END;
         }
 
         Command *getCmd() const {

@@ -5,7 +5,7 @@ static int debugScope = 0;
 
 #define PRINT_START do{                             \
         for(int debugScopeIndex = 0; debugScopeIndex < debugScope; debugScopeIndex++) \
-            cout << "\t" ;                          \
+            cout << "\t" ;              \
         cout <<"Start :"<< __FUNCTION__ << endl;    \
         debugScope++;                              \
         }while(0)
@@ -14,7 +14,7 @@ static int debugScope = 0;
 #define PRINT_END do{                             \
         debugScope--;                               \
         for(int debugScopeIndex = 0; debugScopeIndex < debugScope; debugScopeIndex++) \
-            cout << "\t" ;                          \
+            cout << "\t" ;              \
         cout <<"END :"<< __FUNCTION__ << endl;    \
         }while(0)
 

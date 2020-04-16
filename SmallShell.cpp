@@ -8,6 +8,8 @@
 #define MAX_ARGS 20
 
 void SmallShell::executeCommand(const char *cmd_line) {
+    PRINT_START;
+    PRINT_PARAM(jobs.getSize());
     char *cmd_l = new char[strlen(cmd_line) + 1];
     strcpy(cmd_l, cmd_line);
     redirectionType rdType = noRedirect;
@@ -24,6 +26,7 @@ void SmallShell::executeCommand(const char *cmd_line) {
 
     Command *cmd = CreateCommand(cmd_line);
 
+    PRINT_PARAM(cmd->getType());
     if (cmd->getType() == builtIn) {
         int stdOut = -1;
 
@@ -33,19 +36,24 @@ void SmallShell::executeCommand(const char *cmd_line) {
         }
         cmd->execute();
         cleanUp(stdOut);
+        PRINT_END_PARAM(jobs.getSize());
         return;
+
     } else if (cmd->getType() == external) {
         pid_t pid = fork();
         if (pid == 0) {//Child
+            setpgrp();
             if (rdType != noRedirect) {
                 prepare(redirection, rdType);
             }
             cmd->execute();
             exit(-1); //we'll probably use execv and wont reach here.
         } else {                                      //Parent
+            PRINT_PARAM(pid);
             jobs.addJob(cmd, pid, onBG);
         }
     }
+    PRINT_END;
 }
 const std::string SmallShell::getName() const {
     return name;
@@ -63,6 +71,7 @@ void SmallShell::setName(const char* s) {
 * Creates and returns a pointer to Command class which matches the given command line (cmd_line)
 */
 Command * SmallShell::CreateCommand(const char* cmd_line) {
+    PRINT_PARAM(cmd_line);
     const std::string commands [] = {
             "chprompt", "showpid", "pwd", "cd", "jobs", "kill", "fg",
             "bg", "quit"
