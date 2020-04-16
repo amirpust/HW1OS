@@ -24,7 +24,7 @@ private:
     };
 
 public:
-    Command *CreateCommand(const char* cmd_line);
+    Command *CreateCommand(const char* cmd_line, const char*);
     SmallShell(SmallShell const&)      = delete; // disable copy ctor
     void operator=(SmallShell const&)  = delete; // disable = operator
     static SmallShell& getInstance() // make SmallShell singleton

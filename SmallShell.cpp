@@ -23,7 +23,7 @@ void SmallShell::executeCommand(const char *cmd_line) {
         _removeRedirection(cmd_l);
     }*/
 
-    Command *cmd = CreateCommand(cmd_l);
+    Command *cmd = CreateCommand(cmd_l,cmd_line);
 
     PRINT_PARAM(cmd->getType());
     if (cmd->getType() == builtIn) {
@@ -69,7 +69,7 @@ void SmallShell::setName(const char* s) {
 /**
 * Creates and returns a pointer to Command class which matches the given command line (cmd_line)
 */
-Command * SmallShell::CreateCommand(const char* cmd_line) {
+Command * SmallShell::CreateCommand(const char* cmd_line, const char* og_line) {
     PRINT_PARAM(cmd_line);
     const std::string commands [] = {
             "chprompt", "showpid", "pwd", "cd", "jobs", "kill", "fg",
@@ -78,33 +78,33 @@ Command * SmallShell::CreateCommand(const char* cmd_line) {
     //TODO: check for white space
     string str = string(cmd_line);
     if (str.find(commands[0]) == 0)
-        return new chpromptCommand(cmd_line);
+        return new chpromptCommand(cmd_line,og_line);
 
     if (str.find(commands[1]) == 0)
-        return new showpidCommand(cmd_line);
+        return new showpidCommand(cmd_line,og_line);
 
     if (str.find(commands[2]) == 0)
-        return new pwdCommand(cmd_line);
+        return new pwdCommand(cmd_line,og_line);
 
     if (str.find(commands[3]) == 0)
-        return new cdCommand(cmd_line);
+        return new cdCommand(cmd_line,og_line);
 
     if (str.find(commands[4]) == 0)
-        return new jobsCommand(cmd_line);
+        return new jobsCommand(cmd_line,og_line);
 
     if (str.find(commands[5]) == 0)
-        return new killCommand(cmd_line);
+        return new killCommand(cmd_line,og_line);
 
     if (str.find(commands[6]) == 0)
-        return new fgCommand(cmd_line);
+        return new fgCommand(cmd_line,og_line);
 
     if (str.find(commands[7]) == 0)
-        return new bgCommand(cmd_line);
+        return new bgCommand(cmd_line,og_line);
 
     if (str.find(commands[8]) == 0)
-        return new quitCommand(cmd_line);
+        return new quitCommand(cmd_line,og_line);
 
-    return new ExternalCommand(cmd_line);
+    return new ExternalCommand(cmd_line,og_line);
 }
 
 const char *SmallShell::popLastDir() {

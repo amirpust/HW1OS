@@ -25,9 +25,9 @@ protected:
     char* args[COMMAND_MAX_ARGS];
     int size;
     const cmdType type;
-
+    const char* original_cmd;
 public:
-    Command(const char* cmd_line, cmdType);
+    Command(const char* cmd_line,const char *original_line, cmdType);
     virtual ~Command() = default;//TODO: delete allocated memory
     virtual void execute() = 0;
     const char* print()const;
@@ -39,14 +39,16 @@ public:
 
 class BuiltInCommand : public Command {
  public:
- explicit BuiltInCommand(const char* cmd_line) : Command(cmd_line, builtIn) {};
+ explicit BuiltInCommand(const char* cmd_line, const char* og_line)
+ : Command(cmd_line,og_line, builtIn) {};
   virtual ~BuiltInCommand() = default;
 };
 
 
 class ExternalCommand : public Command {
  public:
-  ExternalCommand(const char* cmd_line): Command(cmd_line, external){};
+  ExternalCommand(const char* cmd_line, const char* og_line)
+  : Command(cmd_line,og_line ,external){};
   virtual ~ExternalCommand() = default;
   void execute() override{
         ///I know its ugly but this way we dont allocate dynamic memory...
@@ -78,50 +80,10 @@ class ExternalCommand : public Command {
 };
 
 
-class PipeCommand : public Command {
-  // TODO: Add your data members
- public:
-  PipeCommand(const char* cmd_line): Command(cmd_line,pipeCmd){};
-  virtual ~PipeCommand() {}
-  void execute() override;
-};
-
-/*
-class RedirectionCommand : public Command {
-    int fd;
-    int fdDup;
-public:
-    explicit RedirectionCommand(const char* cmd_line)
-    : Command(cmd_line, redirection){
-        // check what to do if number if args is less than needed
-
-    };
-    virtual ~RedirectionCommand() {}
-
-    void execute() override{
-        //use create
-    }
-
-    //prepare will open the wanted file
-    //TODO, find first ">"
-    void prepare(){
-        if(strcmp(args[1],">")){
-            //overwrite a file
-            fd = open(args[2],O_CREAT, "w");
-            close(1);//closes stdout
-            fdDup = dup(fd);
-        }else{
-            //append to file ">>"
-
-        }
-    };
-  //void cleanup() override;
-};*/
-
 //changes prompt's name
 class chpromptCommand : public BuiltInCommand{
 public:
-    explicit chpromptCommand(const char* cmd_line);
+    explicit chpromptCommand(const char* cmd_line, const char* og_line);
     void execute() override;
 
 };
@@ -130,7 +92,7 @@ public:
 class showpidCommand : public BuiltInCommand{
 
 public:
-    explicit showpidCommand(const char* cmd_line);
+    explicit showpidCommand(const char* cmd_line, const char* og_line);
 
     void execute() override;
 };
@@ -138,14 +100,15 @@ public:
 //printing the path of the shell
 class pwdCommand : public BuiltInCommand{
 public:
-    explicit pwdCommand(const char* cmd_line) : BuiltInCommand(cmd_line){};
+    explicit pwdCommand(const char* cmd_line, const char* og_line)
+    : BuiltInCommand(cmd_line,og_line){};
     void execute() override;
 };
 
 //changes shell directory
 class cdCommand : public BuiltInCommand{
 public:
-    explicit cdCommand(const char* cmd_line);
+    explicit cdCommand(const char* cmd_line, const char* og_line);
     void execute() override;
 };
 
@@ -153,7 +116,7 @@ public:
 class jobsCommand : public BuiltInCommand{
 
 public:
-    explicit jobsCommand(const char* cmd_line);
+    explicit jobsCommand(const char* cmd_line, const char* og_line);
     void execute() override ;
 };
 
@@ -163,7 +126,7 @@ class killCommand : public BuiltInCommand{
     int jobId;
 
 public:
-    explicit killCommand(const char* cmd_line);
+    explicit killCommand(const char* cmd_line, const char* og_line);
     void execute() override;
 };
 
@@ -172,7 +135,7 @@ class fgCommand : public BuiltInCommand{
     int jobId;
 
 public:
-    fgCommand(const char* cmd_line);
+    fgCommand(const char* cmd_line, const char* og_line);
     void execute() override ;
 };
 
@@ -180,7 +143,7 @@ public:
 class bgCommand : public BuiltInCommand{
     int jobId;
 public:
-    bgCommand(const char* cmd_line);
+    bgCommand(const char* cmd_line, const char* og_line);
 
     void execute() override;
 };
@@ -188,7 +151,7 @@ public:
 
 class quitCommand : public BuiltInCommand{
 public:
-    quitCommand(const char* cmd_line);
+    quitCommand(const char* cmd_line, const char* og_line);
     void execute() override;
 };
 

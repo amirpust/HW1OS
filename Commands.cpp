@@ -167,29 +167,29 @@ void cleanUp(int fd){
     dup(fd);
     close(fd);
 }
-chpromptCommand::chpromptCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
+chpromptCommand::chpromptCommand(const char *cmd_line, const char* og_line)
+: BuiltInCommand(cmd_line,og_line){}
 
 void chpromptCommand::execute() {
     SmallShell::getInstance().setName(args[1]);
 }
 
-Command::Command(const char *cmd_line, cmdType _type) : cmd_line(cmd_line),type(_type) {
-    //char cmd_l[COMMAND_ARGS_MAX_LENGTH];
-    //strcpy(cmd_l,cmd_line);
-    //_removeBackgroundSign(cmd_l);
+Command::Command(const char *cmd_line,const char *original_line ,cmdType _type)
+: cmd_line(cmd_line),type(_type),original_cmd(original_line) {
+
     size = _parseCommandLine(cmd_line, args);
 }
 
 const char *Command::print() const {
-
-    return cmd_line;
+    return original_cmd;
 }
 
 const cmdType Command::getType() const {
     return type;
 }
 
-showpidCommand::showpidCommand(const char *cmd_line) :BuiltInCommand(cmd_line){}
+showpidCommand::showpidCommand(const char *cmd_line, const char* og_line)
+:BuiltInCommand(cmd_line,og_line){}
 
 void showpidCommand::execute() {
     std::cout <<  "smash pid is "<< SmallShell::getInstance().getPid()  << endl;
@@ -199,7 +199,8 @@ void pwdCommand::execute() {
     cout << get_current_dir_name() << endl;
 }
 
-cdCommand::cdCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
+cdCommand::cdCommand(const char *cmd_line, const char* og_line)
+: BuiltInCommand(cmd_line,og_line ){}
 
 void cdCommand::execute() {
     if(size > 2){
@@ -223,7 +224,8 @@ void cdCommand::execute() {
     }
 }
 
-jobsCommand::jobsCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
+jobsCommand::jobsCommand(const char *cmd_line, const char* og_line)
+: BuiltInCommand(cmd_line,og_line){}
 
 void jobsCommand::execute() {
     try {
@@ -234,7 +236,8 @@ void jobsCommand::execute() {
 
 }
 
-killCommand::killCommand(const char *cmd_line) : BuiltInCommand(cmd_line),sigNum(0), jobId(0){
+killCommand::killCommand(const char *cmd_line, const char* og_line)
+: BuiltInCommand(cmd_line, og_line),sigNum(0), jobId(0){
     if(args[1] == nullptr || args[2] == nullptr || args[3] != nullptr)
         throw invalidArgs(args[0]);
 
@@ -252,7 +255,8 @@ void killCommand::execute() {
     }
 }
 
-fgCommand::fgCommand(const char *cmd_line) : jobId(0), BuiltInCommand(cmd_line){
+fgCommand::fgCommand(const char *cmd_line, const char* og_line)
+: jobId(0), BuiltInCommand(cmd_line,og_line){
     if(size != 2){
         throw invalidArgs(args[0]);
     }
@@ -284,7 +288,8 @@ void bgCommand::execute() {
 
 }
 
-bgCommand::bgCommand(const char *cmd_line) : BuiltInCommand(cmd_line){
+bgCommand::bgCommand(const char *cmd_line, const char* og_line) :
+BuiltInCommand(cmd_line,og_line){
     if(size > 2)
         throw invalidArgs(args[0]);
     if(size == 1)
@@ -303,4 +308,5 @@ void quitCommand::execute() {
         kill(SmallShell::getInstance().getPid(), SIGKILL);
 }
 
-quitCommand::quitCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
+quitCommand::quitCommand(const char *cmd_line, const char* og_line)
+: BuiltInCommand(cmd_line,og_line){}
