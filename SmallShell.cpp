@@ -8,50 +8,45 @@
 #define MAX_ARGS 20
 
 void SmallShell::executeCommand(const char *cmd_line) {
-    char* cmd_l = new char[strlen(cmd_line) + 1];
-    strcpy(cmd_l,cmd_line);
-    redirectionType rdType = _isredirection(cmd_l);
+    char *cmd_l = new char[strlen(cmd_line) + 1];
+    strcpy(cmd_l, cmd_line);
+    redirectionType rdType = noRedirect;
 
     bool onBG = _isBackgroundComamnd(cmd_l);
     _removeBackgroundSign(cmd_l);
 
     char redirection[COMMAND_ARGS_MAX_LENGTH];
-    if(rdType != noRedirection){
-        _getRedirection(cmd_l,redirection);
+   /* if (rdType != noRedirect) {
+        _getRedirection(cmd_l, redirection);
         _removeRedirection(cmd_l);
-    }
+    }*/
 
-    if(!onBG){
-        onBG = _isBackgroundComamnd(cmd_l);
-        _removeBackgroundSign(cmd_l);
-    }
 
-    Command* cmd = CreateCommand(cmd_line);
+    Command *cmd = CreateCommand(cmd_line);
 
-    if(cmd->getType() == builtIn){
+    if (cmd->getType() == builtIn) {
         int stdOut = -1;
 
-        if(rdType != noRedirection){
+        if (rdType != noRedirect) {
             stdOut = dup(1);
             prepare(redirection, rdType);
         }
         cmd->execute();
         cleanUp(stdOut);
         return;
-    }else if(cmd->getType() == external){
+    } else if (cmd->getType() == external) {
         pid_t pid = fork();
-        if(pid == 0){
-            PRINT_PARAM(setpgrp());//Child
-            if(rdType != noRedirection){
+        if (pid == 0) {//Child
+            if (rdType != noRedirect) {
                 prepare(redirection, rdType);
             }
             cmd->execute();
             exit(-1); //we'll probably use execv and wont reach here.
-        }else{                                      //Parent
-            jobs.addJob(cmd,pid, onBG);
-
+        } else {                                      //Parent
+            jobs.addJob(cmd, pid, onBG);
+        }
+    }
 }
-
 const std::string SmallShell::getName() const {
     return name;
 }
@@ -134,4 +129,8 @@ void SmallShell::setCurrentDir(char *currentDir) {
 
 JobsList &SmallShell::getJobs() {
     return jobs;
+}
+
+pid_t SmallShell::getPid() const {
+      return myPid;
 }

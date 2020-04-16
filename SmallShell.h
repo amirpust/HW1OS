@@ -17,9 +17,10 @@ private:
     char* currentDir;
     std::string name;
     std::stack<const char*> dirHistory;
+    pid_t myPid;
     SmallShell() : jobs(), defaultName("smash"), name(defaultName),dirHistory(){
         currentDir = get_current_dir_name();
-
+        myPid = getpid();
     };
 
 public:
@@ -41,14 +42,13 @@ public:
     void executeCommand(const char* cmd_line);
     const std::string getName() const;
     void setName(const char* s);
-    //TODO: add extra methods as needed
     const char* popLastDir();
     void pushDir(const char* dir);
     int dirHistorySize();
     char *getCurrentDir() const;
     void setCurrentDir(char *currentDir);
-
     JobsList &getJobs() ;
+    pid_t getPid() const;
 };
 
 

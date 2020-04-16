@@ -34,8 +34,6 @@ public:
     //virtual void prepare();
     //virtual void cleanup();
     const cmdType getType() const;
-    const char *getCmdLine() const;
-
 };
 
 

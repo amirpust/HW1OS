@@ -132,7 +132,7 @@ JobsList::JobEntry *JobsList::getLastStoppedJob(int *jobId) {
 }
 
 void JobsList::printKilledCommand(JobsList::JobEntry *job) {
-    cout << job->getJobPid() << ": " << job->getCmd()->getCmdLine() << endl;
+    cout << job->getJobPid() << ": " << job->getCmd()->print() << endl;
 }
 
 void JobsList::killCommand(JobsList::JobEntry *job, bool toPrint) {

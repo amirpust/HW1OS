@@ -27,8 +27,6 @@ const std::string WHITESPACE = " \n\r\t\f\v";
 #define EXEC(path, arg) \
   execvp((path), (arg));
 
-
-
 string _ltrim(const std::string& s)
 {
   size_t start = s.find_first_not_of(WHITESPACE);
@@ -134,7 +132,6 @@ redirectionType identifyRedirection(char* cmd_line, bool *bg, char* cmd_args){
     return noRedirect;
 }
 
-
 pipeType identifyPipe(char* cmd_line,char* left, char* right){
     const string str(cmd_line);
     int indexOr = str.find_first_of('|');
@@ -152,7 +149,6 @@ pipeType identifyPipe(char* cmd_line,char* left, char* right){
     }
     return noPipe;
 }
-
 
 void prepare(char* path,redirectionType rd){
     close(1);
@@ -185,22 +181,18 @@ Command::Command(const char *cmd_line, cmdType _type) : cmd_line(cmd_line),type(
 }
 
 const char *Command::print() const {
-    return args[0];
+
+    return cmd_line;
 }
 
 const cmdType Command::getType() const {
     return type;
 }
 
-const char *Command::getCmdLine() const {
-    return cmd_line;
-}
-
 showpidCommand::showpidCommand(const char *cmd_line) :BuiltInCommand(cmd_line){}
 
 void showpidCommand::execute() {
-    std::cout << SmallShell::getInstance().getName() << " pid is "
-              << getpid()  << endl;
+    std::cout <<  "smash pid is "<< SmallShell::getInstance().getPid()  << endl;
 }
 
 void pwdCommand::execute() {
@@ -303,13 +295,12 @@ bgCommand::bgCommand(const char *cmd_line) : BuiltInCommand(cmd_line){
 }
 
 void quitCommand::execute() {
-    PRINT_PARAM(args[1]);
     if(size > 1 && !strcmp(args[1], "kill")){
         cout << "smash: sending SIGKILL signal to " +
         std::to_string(SmallShell::getInstance().getJobs().getSize()) + " jobs:" << endl;
         SmallShell::getInstance().getJobs().killAllJobs();
     }
-        kill(getpid(), SIGKILL);
+        kill(SmallShell::getInstance().getPid(), SIGKILL);
 }
 
 quitCommand::quitCommand(const char *cmd_line) : BuiltInCommand(cmd_line){}
