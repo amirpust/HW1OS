@@ -176,7 +176,6 @@ void chpromptCommand::execute() {
 
 Command::Command(const char *cmd_line,const char *original_line ,cmdType _type)
 : cmd_line(cmd_line),type(_type),original_cmd(original_line) {
-
     size = _parseCommandLine(cmd_line, args);
 }
 

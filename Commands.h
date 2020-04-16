@@ -18,16 +18,20 @@ typedef enum {builtIn, external, pipeCmd, redirection} cmdType;
 typedef enum{override, append, noRedirect} redirectionType;
 typedef  enum{pipeRegular,pipeStderr,noPipe}pipeType;
 
-
 class Command {
 protected:
-    const char* cmd_line;
-    char* args[COMMAND_MAX_ARGS];
-    int size;
+    const char* cmd_line; //without '&'
+    char* args[COMMAND_MAX_ARGS];// split cmd_line
+    int size;//size of args
     const cmdType type;
     const char* original_cmd;
+
+    Command(const Command& toCopy):cmd_line(toCopy.cmd_line){
+
+    };
 public:
     Command(const char* cmd_line,const char *original_line, cmdType);
+
     virtual ~Command() = default;//TODO: delete allocated memory
     virtual void execute() = 0;
     const char* print()const;
@@ -36,14 +40,12 @@ public:
     const cmdType getType() const;
 };
 
-
 class BuiltInCommand : public Command {
  public:
  explicit BuiltInCommand(const char* cmd_line, const char* og_line)
  : Command(cmd_line,og_line, builtIn) {};
   virtual ~BuiltInCommand() = default;
 };
-
 
 class ExternalCommand : public Command {
  public:
@@ -78,7 +80,6 @@ class ExternalCommand : public Command {
 
   }
 };
-
 
 //changes prompt's name
 class chpromptCommand : public BuiltInCommand{
